@@ -1,18 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public static GameManager Instance;
+
+    private void Awake()
     {
-        
+        Instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
+
+
+
+    public static event Action GameWin;
+
+    public static event Action Slide;
+
+    public static event Action Tiled;
+
+    public void OnGameWin()
     {
-        
+        if (GameWin != null)
+        {
+            GameWin();
+        }
+    }
+
+    public void OnSlide()
+    {
+        if (Slide != null)
+        {
+            Slide();
+        }
+    }
+
+    public void OnTiled()
+    {
+        if (Tiled!=null)
+        {
+            Tiled();
+        }
     }
 }
