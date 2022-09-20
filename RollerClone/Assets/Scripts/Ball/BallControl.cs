@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BallControl : MonoBehaviour
 {
-    //Idle'da bug var
+    
     private Enums.BallState _state;
     private Enums.BallMovementBehaviour _movementBehaviour;
     public float movementSpeed;
@@ -129,10 +129,11 @@ public class BallControl : MonoBehaviour
 
     IEnumerator MoveBallToTarget(Transform target)
     {
-        yield return new WaitForEndOfFrame();
+        
+        yield return new WaitForFixedUpdate();
         if (gameObject.transform.position!=target.position)
         {
-            Debug.Log("Ienumerator");
+           
             gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, target.position, movementSpeed * Time.deltaTime);
             StartCoroutine(MoveBallToTarget(target));
         }

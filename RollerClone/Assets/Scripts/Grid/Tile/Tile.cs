@@ -6,8 +6,9 @@ public class Tile : MonoBehaviour
 {
     [HideInInspector] public int posOnX;
     [HideInInspector] public int posOnZ;
-    [HideInInspector] public bool isBlocked;
+     public bool isBlocked;
     public List<Tile> neighbourTiles;
+    private MeshRenderer tileColor;
 
 
     public Tile upNeighbour;
@@ -34,6 +35,19 @@ public class Tile : MonoBehaviour
     private void Start()
     {
         isBlocked = false;
+        tileColor = GetComponent<MeshRenderer>();
+       
+    }
+    private void Update()
+    {
+        if (isBlocked)
+        {
+            tileColor.material.color = Color.red;
+        }
+        else
+        {
+            tileColor.material.color = Color.gray;
+        }
     }
 
 
