@@ -45,6 +45,7 @@ public class BallControl : MonoBehaviour
     private void Update()
     {
         MoveBall();
+        Debug.Log(_state);
 
     }
 
@@ -59,51 +60,59 @@ public class BallControl : MonoBehaviour
 
     private void MoveBall()
     {
+        if (_state!=Enums.BallState.Moving)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                _mouseFirstPos = Input.mousePosition;
+            }
+            if (Input.GetMouseButton(0))
+            {
+                _mouseCurrentPos = Input.mousePosition;
+                _mouseDeltaPos = CalculateDeltaPosition(_mouseFirstPos, _mouseCurrentPos);
+
+                float deltaX = _mouseDeltaPos.x;
+                float deltaY = _mouseDeltaPos.y;
+
+                if (Mathf.Abs(deltaX) > Mathf.Abs(deltaY) && _mouseDeltaPos != Vector2.zero)
+                {
+                    if (deltaX > 0)
+                    {
+                        _movementBehaviour = Enums.BallMovementBehaviour.SwipedRight;
+                    }
+                    else
+                    {
+                        _movementBehaviour = Enums.BallMovementBehaviour.SwipedLeft;
+                    }
+                }
+                else if (_mouseDeltaPos != Vector2.zero)
+                {
+                    if (deltaY > 0)
+                    {
+                        _movementBehaviour = Enums.BallMovementBehaviour.SwipedUp;
+                    }
+                    else
+                    {
+                        _movementBehaviour = Enums.BallMovementBehaviour.SwipedDown;
+                    }
+                }
 
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            _mouseFirstPos = Input.mousePosition;
-        }
-        if (Input.GetMouseButton(0))
-        {
-            _mouseCurrentPos = Input.mousePosition;
-            _mouseDeltaPos = CalculateDeltaPosition(_mouseFirstPos, _mouseCurrentPos);
-           
-            float deltaX = _mouseDeltaPos.x;
-            float deltaY = _mouseDeltaPos.y;
-            
-            if (Mathf.Abs(deltaX)>Mathf.Abs(deltaY)&&_mouseDeltaPos!=Vector2.zero)
-            {
-                if (deltaX>0)
-                {
-                    _movementBehaviour = Enums.BallMovementBehaviour.SwipedRight;
-                }
-                else
-                {
-                    _movementBehaviour = Enums.BallMovementBehaviour.SwipedLeft;
-                }
             }
-            else if(_mouseDeltaPos != Vector2.zero)
+            if (Input.GetMouseButtonUp(0))
             {
-                if (deltaY>0)
+                if (_mouseDeltaPos!=Vector2.zero)
                 {
-                    _movementBehaviour = Enums.BallMovementBehaviour.SwipedUp;
+                    GameManager.Instance.OnSlide(_movementBehaviour, _currentTile);
+                    _mouseDeltaPos = Vector2.zero;
+                    _state = Enums.BallState.Moving;
+                    _movementBehaviour = Enums.BallMovementBehaviour.Idle;
                 }
-                else
-                {
-                    _movementBehaviour = Enums.BallMovementBehaviour.SwipedDown;
-                }
+               
             }
-           
-            
         }
-        if (Input.GetMouseButtonUp(0))
-        {
-            GameManager.Instance.OnSlide(_movementBehaviour, _currentTile);
-            _mouseDeltaPos = Vector2.zero;
-            _movementBehaviour = Enums.BallMovementBehaviour.Idle;
-        }
+
+        
 
     }
 
@@ -116,12 +125,7 @@ public class BallControl : MonoBehaviour
         return distanceVector;
     }
 
-    private Enums.BallState CalculateMovementBehaviour()
-    {
-
-
-        return 0;
-    }
+  
 
     IEnumerator MoveBallToTarget(Transform target)
     {
@@ -134,6 +138,7 @@ public class BallControl : MonoBehaviour
         }
         else
         {
+            _state = Enums.BallState.Idle;
             StopCoroutine(MoveBallToTarget(target));
         }
     }

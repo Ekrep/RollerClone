@@ -21,8 +21,9 @@ public class Enums : MonoBehaviour
     }
     public enum BallState
     {
-        Moving,
-        Idle
+        Idle,
+        Moving
+        
     }
 
     public enum TileType
