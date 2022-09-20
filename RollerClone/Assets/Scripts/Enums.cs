@@ -11,12 +11,18 @@ public class Enums : MonoBehaviour
         Instance = this;
     }
 
-    public enum BallState
+    public enum BallMovementBehaviour
     {
+        Idle,
         SwipedUp,
         SwipedDown,
         SwipedLeft,
         SwipedRight
+    }
+    public enum BallState
+    {
+        Moving,
+        Idle
     }
 
 }
