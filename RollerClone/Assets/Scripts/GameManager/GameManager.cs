@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
 
     public static event Action GameWin;
 
-    public static event Action<Enums.BallMovementBehaviour> Slide;
+    public static event Action<Enums.BallMovementBehaviour,Tile> Slide;
 
     public static event Action Tiled;
 
@@ -77,11 +77,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void OnSlide(Enums.BallMovementBehaviour movementBehaviour)
+    public void OnSlide(Enums.BallMovementBehaviour movementBehaviour, Tile currentTile)
     {
         if (Slide != null)
         {
-            Slide(movementBehaviour);
+            Slide(movementBehaviour,currentTile);
         }
     }
 

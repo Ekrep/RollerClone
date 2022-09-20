@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 9211903487800593340}
   m_Layer: 0
   m_Name: Tile
-  m_TagString: Untagged
+  m_TagString: Tile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -113,3 +113,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   posOnX: 0
   posOnZ: 0
+  isBlocked: 0
+  neighbourTiles: []
+  upNeighbour: {fileID: 0}
+  downNeighbour: {fileID: 0}
+  leftNeighbour: {fileID: 0}
+  rightNeighbour: {fileID: 0}
+  tileType: 0

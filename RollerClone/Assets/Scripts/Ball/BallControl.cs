@@ -9,18 +9,50 @@ public class BallControl : MonoBehaviour
     public float movementSpeed;
     [HideInInspector] public bool canMove;
 
+   [SerializeField] private Tile _currentTile;
+
 
     private Vector2 _mouseFirstPos;
     private Vector2 _mouseDeltaPos;
     private Vector2 _mouseCurrentPos;
 
+    private void OnEnable()
+    {
+        GameManager.Tiled += GameManager_Tiled;
+    }
+
+    private void GameManager_Tiled()
+    {
+        gameObject.transform.position = new Vector3(GridManager.Instance.allTiles[0].transform.position.x, 0.5f, GridManager.Instance.allTiles[0].transform.position.z);
+        _currentTile = GridManager.Instance.allTiles[0];
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Tiled -= GameManager_Tiled;
+    }
+
+
+
+    private void Start()
+    {
+        
+        
+    }
+
 
     private void Update()
     {
         MoveBall();
-        
-    
 
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+       /* if (collision.gameObject.CompareTag("Tile")&&collision.gameObject.GetComponent<Tile>().isBlocked==false)
+        {
+            _currentTile = collision.gameObject.GetComponent<Tile>();
+        }*/
     }
 
 
@@ -62,11 +94,12 @@ public class BallControl : MonoBehaviour
                     _movementBehaviour = Enums.BallMovementBehaviour.SwipedDown;
                 }
             }
-            GameManager.Instance.OnSlide(_movementBehaviour);
+           
             
         }
         if (Input.GetMouseButtonUp(0))
         {
+            GameManager.Instance.OnSlide(_movementBehaviour, _currentTile);
             _mouseDeltaPos = Vector2.zero;
             _movementBehaviour = Enums.BallMovementBehaviour.Idle;
         }

@@ -31,6 +31,11 @@ public class Tile : MonoBehaviour
         GameManager.Tiled -= GameManager_Tiled;
     }
 
+    private void Start()
+    {
+        isBlocked = false;
+    }
+
 
 
     private void GetNeighbourTiles()
