@@ -9,6 +9,9 @@ public class Tile : MonoBehaviour
     [HideInInspector] public bool isBlocked;
     public List<Tile> neighbourTiles;
 
+
+    [HideInInspector]public Enums.TileType tileType;
+
     private void OnEnable()
     {
         GameManager.Tiled += GameManager_Tiled;

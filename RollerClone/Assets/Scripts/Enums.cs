@@ -25,4 +25,11 @@ public class Enums : MonoBehaviour
         Idle
     }
 
+    public enum TileType
+    {
+        Moveable,
+        Blocked
+
+    }
+
 }
