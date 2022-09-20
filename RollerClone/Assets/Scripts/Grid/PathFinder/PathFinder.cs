@@ -15,7 +15,7 @@ public class PathFinder : MonoBehaviour
     {
 
         _calculatedPath = CalculatePath(movementBehaviour, currentTile);
-        GameManager.Instance.OnSendPathToBall(_calculatedPath[_calculatedPath.Count - 1]);
+        GameManager.Instance.OnSendPathToBall(_calculatedPath);
 
     }
     private void OnDisable()

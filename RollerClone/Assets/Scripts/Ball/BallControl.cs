@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class BallControl : MonoBehaviour
 {
-    
+    //Needs Fix!!
     private Enums.BallState _state;
     private Enums.BallMovementBehaviour _movementBehaviour;
     public float movementSpeed;
     [HideInInspector] public bool canMove;
 
    [SerializeField] private Tile _currentTile;
+
+
+    private List<Tile> _ballTargetPath;
+
+    private int _pathWayCurrentIndex=0;
 
 
     private Vector2 _mouseFirstPos;
@@ -23,10 +28,11 @@ public class BallControl : MonoBehaviour
         GameManager.SendPathToBall += GameManager_SendPathToBall;
     }
 
-    private void GameManager_SendPathToBall(Tile finalPointOfPath)
+    private void GameManager_SendPathToBall(List<Tile> tilePath)
     {
-        StartCoroutine(MoveBallToTarget(finalPointOfPath.transform));
-        _currentTile = finalPointOfPath;
+        StartCoroutine(MoveBallToTarget(tilePath));
+        _currentTile = tilePath[tilePath.Count-1];
+        _ballTargetPath = tilePath;
     }
 
     private void GameManager_Tiled()
@@ -127,21 +133,32 @@ public class BallControl : MonoBehaviour
 
   
 
-    IEnumerator MoveBallToTarget(Transform target)
+    IEnumerator MoveBallToTarget(List<Tile> path)
     {
-        
+        Debug.Log("Ienumerator");
         yield return new WaitForFixedUpdate();
-        if (gameObject.transform.position!=target.position)
+        if (gameObject.transform.position!=path[_pathWayCurrentIndex].transform.position)
         {
            
-            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, target.position, movementSpeed * Time.deltaTime);
-            StartCoroutine(MoveBallToTarget(target));
+            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, path[_pathWayCurrentIndex].transform.position, movementSpeed * Time.deltaTime);
+            //_pathWayCurrentIndex++;
         }
         else
         {
-            _state = Enums.BallState.Idle;
-            StopCoroutine(MoveBallToTarget(target));
+            if (gameObject.transform.position!=path[path.Count-1].transform.position)
+            {
+                StartCoroutine(MoveBallToTarget(path));
+            }
+            else
+            {
+                _state = Enums.BallState.Idle;
+                StopCoroutine(MoveBallToTarget(path));
+                _pathWayCurrentIndex = 0;
+            }
+            
         }
     }
+
+  
 
 }

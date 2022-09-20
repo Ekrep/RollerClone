@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
 
     public static event Action Tiled;
 
-    public static event Action<Tile> SendPathToBall;
+    public static event Action<List<Tile>> SendPathToBall;
 
 
 
@@ -95,11 +95,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void OnSendPathToBall(Tile finalTileOfList)
+    public void OnSendPathToBall(List<Tile> tilePath)
     {
         if (SendPathToBall!=null)
         {
-            SendPathToBall(finalTileOfList);
+            SendPathToBall(tilePath);
         }
     }
 }
