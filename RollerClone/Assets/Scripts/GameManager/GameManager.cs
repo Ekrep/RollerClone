@@ -55,13 +55,13 @@ public class GameManager : MonoBehaviour
                 levels[i].SetActive(false);
             }
         }*/
-        if (_currentLevelIndex!=0)
+        if (_currentLevelIndex != 0)
         {
             levels[_currentLevelIndex - 1].SetActive(false);
             levels[_currentLevelIndex].SetActive(true);
-            
+
         }
-        
+
     }
 
 
