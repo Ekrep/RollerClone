@@ -8,6 +8,7 @@ public class GridManager : MonoBehaviour
 
 
     [SerializeField] private GameObject _tilePrefab;
+    [SerializeField] private GameObject _obstaclePrefab;
      public int gridHeight;
      public int gridWidth;
     [SerializeField] private Transform _tileParent;
@@ -26,11 +27,7 @@ public class GridManager : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+   
 
 
     private void GenerateGrid()
@@ -50,4 +47,6 @@ public class GridManager : MonoBehaviour
         }
         GameManager.Instance.OnTiled();
     }
+
+
 }

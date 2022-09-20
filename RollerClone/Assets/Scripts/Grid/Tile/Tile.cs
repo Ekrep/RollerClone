@@ -10,6 +10,11 @@ public class Tile : MonoBehaviour
     public List<Tile> neighbourTiles;
 
 
+    public Tile upNeighbour;
+    public Tile downNeighbour;
+    public Tile leftNeighbour;
+    public Tile rightNeighbour;
+
     [HideInInspector]public Enums.TileType tileType;
 
     private void OnEnable()
@@ -36,18 +41,22 @@ public class Tile : MonoBehaviour
             if (allTileListFlag[i].posOnX == this.posOnX + 10 && allTileListFlag[i].posOnZ == this.posOnZ && posOnX != GridManager.Instance.gridWidth)
             {
                 neighbourTiles.Add(allTileListFlag[i]);
+                rightNeighbour = allTileListFlag[i];
             }
             if (allTileListFlag[i].posOnX == this.posOnX - 10 && allTileListFlag[i].posOnZ == this.posOnZ)
             {
                 neighbourTiles.Add(allTileListFlag[i]);
+                leftNeighbour = allTileListFlag[i];
             }
             if (allTileListFlag[i].posOnZ == this.posOnZ + 10 && allTileListFlag[i].posOnX == this.posOnX && posOnZ != GridManager.Instance.gridHeight)
             {
                 neighbourTiles.Add(allTileListFlag[i]);
+                upNeighbour = allTileListFlag[i];
             }
             if (allTileListFlag[i].posOnZ == this.posOnZ - 10 && allTileListFlag[i].posOnX == this.posOnX)
             {
                 neighbourTiles.Add(allTileListFlag[i]);
+                downNeighbour = allTileListFlag[i];
             }
 
 
