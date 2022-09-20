@@ -15,7 +15,7 @@ public class Tile : MonoBehaviour
     public Tile leftNeighbour;
     public Tile rightNeighbour;
 
-    [HideInInspector]public Enums.TileType tileType;
+    [HideInInspector] public Enums.TileType tileType;
 
     private void OnEnable()
     {

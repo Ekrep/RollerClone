@@ -5,7 +5,7 @@ using UnityEngine;
 public class PathFinder : MonoBehaviour
 {
 
-    public List<Tile> testList;
+    public List<Tile> _calculatedPath;
     private void OnEnable()
     {
         GameManager.Slide += GameManager_Slide;
@@ -14,7 +14,8 @@ public class PathFinder : MonoBehaviour
     private void GameManager_Slide(Enums.BallMovementBehaviour movementBehaviour, Tile currentTile)
     {
 
-        testList = CalculatePath(movementBehaviour, currentTile);
+        _calculatedPath = CalculatePath(movementBehaviour, currentTile);
+        GameManager.Instance.OnSendPathToBall(_calculatedPath[_calculatedPath.Count - 1]);
 
     }
     private void OnDisable()
@@ -36,12 +37,11 @@ public class PathFinder : MonoBehaviour
 
             case Enums.BallMovementBehaviour.SwipedUp:
 
-                while (currentTile.upNeighbour != null)
+                while (currentTile.upNeighbour != null && !currentTile.upNeighbour.isBlocked)
                 {
                     path.Add(currentTile.upNeighbour);
                     currentTile = currentTile.upNeighbour;
-                    Debug.Log("girdim");
-                    Debug.Log(currentTile);
+                    
                 }
 
 
@@ -49,12 +49,11 @@ public class PathFinder : MonoBehaviour
                 break;
             case Enums.BallMovementBehaviour.SwipedDown:
 
-                while (currentTile.downNeighbour != null)
+                while (currentTile.downNeighbour != null && !currentTile.downNeighbour.isBlocked)
                 {
                     path.Add(currentTile.downNeighbour);
                     currentTile = currentTile.downNeighbour;
-                    Debug.Log(currentTile);
-                    Debug.Log("girdim");
+                   
                 }
 
 
@@ -62,24 +61,22 @@ public class PathFinder : MonoBehaviour
                 break;
             case Enums.BallMovementBehaviour.SwipedLeft:
 
-                while (currentTile.leftNeighbour != null)
+                while (currentTile.leftNeighbour != null && !currentTile.leftNeighbour.isBlocked)
                 {
                     path.Add(currentTile.leftNeighbour);
                     currentTile = currentTile.leftNeighbour;
-                    Debug.Log("girdim");
-                    Debug.Log(currentTile);
+                  
                 }
 
 
 
                 break;
             case Enums.BallMovementBehaviour.SwipedRight:
-                while (currentTile.rightNeighbour != null)
+                while (currentTile.rightNeighbour != null && !currentTile.rightNeighbour.isBlocked)
                 {
                     path.Add(currentTile.rightNeighbour);
                     currentTile = currentTile.rightNeighbour;
-                    Debug.Log("girdim");
-                    Debug.Log(currentTile);
+                   
 
                 }
 

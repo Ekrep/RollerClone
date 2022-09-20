@@ -43,6 +43,8 @@ public class GameManager : MonoBehaviour
 
     public static event Action Tiled;
 
+    public static event Action<Tile> SendPathToBall;
+
 
 
     #region LevelControl Function
@@ -90,6 +92,14 @@ public class GameManager : MonoBehaviour
         if (Tiled != null)
         {
             Tiled();
+        }
+    }
+
+    public void OnSendPathToBall(Tile finalTileOfList)
+    {
+        if (SendPathToBall!=null)
+        {
+            SendPathToBall(finalTileOfList);
         }
     }
 }

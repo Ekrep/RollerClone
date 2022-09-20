@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BallControl : MonoBehaviour
 {
+    //Idle'da bug var
     private Enums.BallState _state;
     private Enums.BallMovementBehaviour _movementBehaviour;
     public float movementSpeed;
@@ -19,6 +20,13 @@ public class BallControl : MonoBehaviour
     private void OnEnable()
     {
         GameManager.Tiled += GameManager_Tiled;
+        GameManager.SendPathToBall += GameManager_SendPathToBall;
+    }
+
+    private void GameManager_SendPathToBall(Tile finalPointOfPath)
+    {
+        StartCoroutine(MoveBallToTarget(finalPointOfPath.transform));
+        _currentTile = finalPointOfPath;
     }
 
     private void GameManager_Tiled()
@@ -30,14 +38,7 @@ public class BallControl : MonoBehaviour
     private void OnDisable()
     {
         GameManager.Tiled -= GameManager_Tiled;
-    }
-
-
-
-    private void Start()
-    {
-        
-        
+        GameManager.SendPathToBall -= GameManager_SendPathToBall;
     }
 
 
@@ -120,6 +121,21 @@ public class BallControl : MonoBehaviour
 
 
         return 0;
+    }
+
+    IEnumerator MoveBallToTarget(Transform target)
+    {
+        yield return new WaitForEndOfFrame();
+        if (gameObject.transform.position!=target.position)
+        {
+            Debug.Log("Ienumerator");
+            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, target.position, movementSpeed * Time.deltaTime);
+            StartCoroutine(MoveBallToTarget(target));
+        }
+        else
+        {
+            StopCoroutine(MoveBallToTarget(target));
+        }
     }
 
 }
