@@ -100,7 +100,7 @@ public class GridManager : MonoBehaviour
         
         int multiplier = 3;
 
-        for (int i = 0; i < 128; i++)
+        for (int i = 0; i < 50; i++)
         {
             _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 4);
             switch (_pathCreateType)
@@ -110,7 +110,7 @@ public class GridManager : MonoBehaviour
 
                     for (int j = 0; j < multiplier; j++)
                     {
-                        if (selectedTile.upNeighbour != null)
+                        if (selectedTile.upNeighbour != null&&selectedTile.upNeighbour.isBlocked)
                         {
                             Debug.Log("Switch up");
                             selectedTile.isBlocked = false;
@@ -124,7 +124,7 @@ public class GridManager : MonoBehaviour
                     Debug.Log("Switch down");
                     for (int j = 0; j < multiplier; j++)
                     {
-                        if (selectedTile.downNeighbour != null)
+                        if (selectedTile.downNeighbour != null && selectedTile.downNeighbour.isBlocked)
                         {
                             Debug.Log("Switch up");
                             selectedTile.isBlocked = false;
@@ -138,7 +138,7 @@ public class GridManager : MonoBehaviour
                     Debug.Log("Switch left");
                     for (int j = 0; j < multiplier; j++)
                     {
-                        if (selectedTile.leftNeighbour != null)
+                        if (selectedTile.leftNeighbour != null && selectedTile.leftNeighbour.isBlocked)
                         {
                             Debug.Log("Switch up");
                             selectedTile.isBlocked = false;
@@ -153,7 +153,7 @@ public class GridManager : MonoBehaviour
                     Debug.Log("Switch right");
                     for (int j = 0; j< multiplier; j++)
                     {
-                        if (selectedTile.rightNeighbour != null)
+                        if (selectedTile.rightNeighbour != null && selectedTile.rightNeighbour.isBlocked)
                         {
                             Debug.Log("Switch up");
                             selectedTile.isBlocked = false;
