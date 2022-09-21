@@ -15,7 +15,7 @@ public class BallControl : MonoBehaviour
 
     private List<Tile> _ballTargetPath;
 
-    private int _pathWayCurrentIndex = 0;
+    [SerializeField]private int _pathWayCurrentIndex = 0;
 
 
     private Vector2 _mouseFirstPos;
@@ -126,31 +126,28 @@ public class BallControl : MonoBehaviour
     }
 
 
-    //Needs Fix!!
+ 
     IEnumerator MoveBallToTarget(List<Tile> path)
     {
-        Debug.Log("Ienumerator");
+        
         yield return new WaitForFixedUpdate();
-        if (gameObject.transform.position != path[_pathWayCurrentIndex].transform.position)
+        if (gameObject.transform.position != path[path.Count-1].transform.position)
         {
 
             gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, path[_pathWayCurrentIndex].transform.position, movementSpeed * Time.deltaTime);
             StartCoroutine(MoveBallToTarget(path));
             if (gameObject.transform.position==path[_pathWayCurrentIndex].transform.position&&
-                _pathWayCurrentIndex<path.Count-1)
+                _pathWayCurrentIndex<path.Count)
             {
-                Debug.Log("color");
+                
                 path[_pathWayCurrentIndex].tileColor.material.color = Color.blue;
                 _pathWayCurrentIndex++;
             }
         }
         else
         {
-            /*if (gameObject.transform.position != path[path.Count - 1].transform.position)
-            {
-                _pathWayCurrentIndex++;
-            }*/
-            Debug.Log("girdim else");
+            
+            
                 _state = Enums.BallState.Idle;
                 StopCoroutine(MoveBallToTarget(path));
                 _pathWayCurrentIndex = 0;

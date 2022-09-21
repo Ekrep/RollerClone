@@ -259,6 +259,7 @@ MonoBehaviour:
   movementSpeed: 100
   canMove: 0
   _currentTile: {fileID: 0}
+  _pathWayCurrentIndex: 0
 --- !u!1 &659362017
 GameObject:
   m_ObjectHideFlags: 0
@@ -557,7 +558,7 @@ PrefabInstance:
     - target: {fileID: 7989762346751699866, guid: 2722a2ecc5eac3b4098535cf6deeda22,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7989762346751699866, guid: 2722a2ecc5eac3b4098535cf6deeda22,
         type: 3}
