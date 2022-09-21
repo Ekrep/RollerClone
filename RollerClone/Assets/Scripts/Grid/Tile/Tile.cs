@@ -49,7 +49,10 @@ public class Tile : MonoBehaviour
                 tileColor.material.color = Color.red;
             }
         }
-       
+        if (!isBlocked)
+        {
+            tileColor.material.color = Color.white;
+        }
        
     }
 

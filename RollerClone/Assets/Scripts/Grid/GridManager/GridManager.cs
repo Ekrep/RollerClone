@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
+    
     public static GridManager Instance;
 
 
@@ -12,14 +13,21 @@ public class GridManager : MonoBehaviour
     public int gridHeight;
     public int gridWidth;
     [SerializeField] private Transform _tileParent;
-    public Dictionary<Vector2Int, Tile> tileDictionary= new Dictionary<Vector2Int, Tile>();
+
+    private Enums.MoveablePathCreateType _pathCreateType;
+
+
+
+    public Dictionary<Vector2Int, Tile> tileDictionary = new Dictionary<Vector2Int, Tile>();
+
+
 
 
 
     public List<Tile> allTiles;
 
 
-
+    public Tile selectedTile;
 
 
 
@@ -38,6 +46,7 @@ public class GridManager : MonoBehaviour
     {
         GenerateGrid();
         GenerateObstacles();
+        CreateMoveAblePath();
 
     }
 
@@ -75,26 +84,94 @@ public class GridManager : MonoBehaviour
     //Needs Adjustments!!
     private void GenerateObstacles()
     {
-        Tile selectedTile;
 
-        Vector2Int vec = new Vector2Int(3, 2);
-        Debug.Log(tileDictionary[vec]);
-
-        for (int i = 0; i < 7 /* => how many times select*/ ; i++)
+        for (int i = 0; i < allTiles.Count; i++)
         {
-
-
-
-
-
+            allTiles[i].isBlocked = true;
         }
-
-
-
-
+       
 
 
     }
 
+    private void CreateMoveAblePath()
+    {
+         selectedTile = allTiles[Random.Range(0, allTiles.Count)];
+        
+        int multiplier = 3;
+
+        for (int i = 0; i < 128; i++)
+        {
+            _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 4);
+            switch (_pathCreateType)
+            {
+
+                case Enums.MoveablePathCreateType.Up:
+
+                    for (int j = 0; j < multiplier; j++)
+                    {
+                        if (selectedTile.upNeighbour != null)
+                        {
+                            Debug.Log("Switch up");
+                            selectedTile.isBlocked = false;
+                            selectedTile.upNeighbour.isBlocked = false;
+                            selectedTile = selectedTile.upNeighbour;
+                        }
+
+                    }
+                    break;
+                case Enums.MoveablePathCreateType.Down:
+                    Debug.Log("Switch down");
+                    for (int j = 0; j < multiplier; j++)
+                    {
+                        if (selectedTile.downNeighbour != null)
+                        {
+                            Debug.Log("Switch up");
+                            selectedTile.isBlocked = false;
+                            selectedTile.downNeighbour.isBlocked = false;
+                            selectedTile = selectedTile.downNeighbour;
+                        }
+
+                    }
+                    break;
+                case Enums.MoveablePathCreateType.Left:
+                    Debug.Log("Switch left");
+                    for (int j = 0; j < multiplier; j++)
+                    {
+                        if (selectedTile.leftNeighbour != null)
+                        {
+                            Debug.Log("Switch up");
+                            selectedTile.isBlocked = false;
+                            selectedTile.leftNeighbour.isBlocked = false;
+                            selectedTile = selectedTile.leftNeighbour;
+                        }
+
+
+                    }
+                    break;
+                case Enums.MoveablePathCreateType.Right:
+                    Debug.Log("Switch right");
+                    for (int j = 0; j< multiplier; j++)
+                    {
+                        if (selectedTile.rightNeighbour != null)
+                        {
+                            Debug.Log("Switch up");
+                            selectedTile.isBlocked = false;
+                            selectedTile.rightNeighbour.isBlocked = false;
+                            selectedTile = selectedTile.rightNeighbour;
+                        }
+
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+        }
+    }
+
+
+
+       
 
 }

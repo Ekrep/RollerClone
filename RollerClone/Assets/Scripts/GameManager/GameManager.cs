@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<GameObject> levels;
 
 
-    private int _currentLevelIndex;
+    [HideInInspector]public int currentLevelIndex;
     private void Awake()
     {
         Instance = this;
@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
 
     private void GameManager_GameWin()
     {
-        _currentLevelIndex++;
+        currentLevelIndex++;
         LevelControl();
     }
 
@@ -57,10 +57,10 @@ public class GameManager : MonoBehaviour
                 levels[i].SetActive(false);
             }
         }*/
-        if (_currentLevelIndex != 0)
+        if (currentLevelIndex != 0)
         {
-            levels[_currentLevelIndex - 1].SetActive(false);
-            levels[_currentLevelIndex].SetActive(true);
+            levels[currentLevelIndex - 1].SetActive(false);
+            levels[currentLevelIndex].SetActive(true);
 
         }
 
