@@ -34,7 +34,7 @@ public class Tile : MonoBehaviour
 
     private void Start()
     {
-        isBlocked = false;
+        
         tileColor = GetComponent<MeshRenderer>();
         
        

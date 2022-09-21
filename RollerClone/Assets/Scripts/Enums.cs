@@ -33,4 +33,16 @@ public class Enums : MonoBehaviour
 
     }
 
+    public enum ObstacleType
+    {
+        DotObstacle,
+        LObstacle,
+        ReverseLObstacle,
+        HorizontalIObstacle,
+        VerticalIObstacle,
+        OpenSquareObstacle,
+        UObstacle,
+        ReverseUObstacle
+    }
+
 }
