@@ -41,11 +41,15 @@ public class Tile : MonoBehaviour
     }
     private void Update()
     {
-        
-        if (isBlocked)
+        if (tileColor.material.color!=Color.red)
         {
-            tileColor.material.color = Color.red;
+            if (isBlocked)
+            {
+
+                tileColor.material.color = Color.red;
+            }
         }
+       
        
     }
 

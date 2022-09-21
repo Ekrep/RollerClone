@@ -12,8 +12,9 @@ public class GridManager : MonoBehaviour
     public int gridHeight;
     public int gridWidth;
     [SerializeField] private Transform _tileParent;
+    public Dictionary<Vector2Int, Tile> tileDictionary= new Dictionary<Vector2Int, Tile>();
 
-    [SerializeField]private Enums.ObstacleType _obstacleType;
+
 
     public List<Tile> allTiles;
 
@@ -21,8 +22,10 @@ public class GridManager : MonoBehaviour
 
 
 
-    Tile selectedTile;
-    Tile secondTile;
+
+
+
+
 
 
 
@@ -54,53 +57,41 @@ public class GridManager : MonoBehaviour
                 go.transform.SetParent(_tileParent);
                 go.name = "Tile" + "(" + i * 10 + "," + j * 10 + ")";
                 allTiles.Add(go.GetComponent<Tile>());
+                tileDictionary.Add(new Vector2Int(i, j), go.GetComponent<Tile>());
+                if (i % 2 == 0 && j % 2 == 0)
+                {
+                    go.GetComponent<MeshRenderer>().material.color = Color.black;
+                }
+                else
+                {
+                    go.GetComponent<MeshRenderer>().material.color = Color.white;
+                }
             }
         }
         GameManager.Instance.OnTiled();
     }
 
+
+    //Needs Adjustments!!
     private void GenerateObstacles()
     {
-        
-        //Tile 
+        Tile selectedTile;
 
+        Vector2Int vec = new Vector2Int(3, 2);
+        Debug.Log(tileDictionary[vec]);
 
-
-        switch (_obstacleType)
+        for (int i = 0; i < 7 /* => how many times select*/ ; i++)
         {
-            case Enums.ObstacleType.DotObstacle:
-                selectedTile = allTiles[Random.Range(0, allTiles.Count)];
-                selectedTile.isBlocked = true;
-                break;
-            case Enums.ObstacleType.LObstacle:
-                selectedTile = allTiles[Random.Range(10, allTiles.Count - 10)];
-                for (int i = 0; i < 4; i++)
-                {
-                    selectedTile = selectedTile.downNeighbour;
-                    selectedTile.isBlocked = true;
-                    
-                }
-                secondTile = selectedTile.rightNeighbour;
-                secondTile.isBlocked = true;
-                
 
 
-                break;
-            case Enums.ObstacleType.ReverseLObstacle:
-                break;
-            case Enums.ObstacleType.HorizontalIObstacle:
-                break;
-            case Enums.ObstacleType.VerticalIObstacle:
-                break;
-            case Enums.ObstacleType.OpenSquareObstacle:
-                break;
-            case Enums.ObstacleType.UObstacle:
-                break;
-            case Enums.ObstacleType.ReverseUObstacle:
-                break;
-            default:
-                break;
+
+
+
         }
+
+
+
+
 
 
     }

@@ -296,7 +296,7 @@ MonoBehaviour:
   gridHeight: 16
   gridWidth: 16
   _tileParent: {fileID: 1497463679}
-  _obstacleType: 1
+  _obstacleType: 2
   allTiles: []
 --- !u!4 &659362019
 Transform:
