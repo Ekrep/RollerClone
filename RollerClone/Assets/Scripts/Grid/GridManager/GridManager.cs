@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-    
+
     public static GridManager Instance;
 
 
@@ -89,14 +89,43 @@ public class GridManager : MonoBehaviour
         {
             allTiles[i].isBlocked = true;
         }
-       
+
 
 
     }
 
     private void CreateMoveAblePath()
     {
-         selectedTile = allTiles[Random.Range(0, allTiles.Count)];
+        int howManyTilesGonnaSelected=Random.Range(5,10);
+        List<Tile> selectedAndUnblockedTiles=new List<Tile>();
+        float distance=0;
+        for (int i = 0; i < howManyTilesGonnaSelected; i++)
+        {
+            Tile select= tileDictionary[new Vector2Int(Random.Range(1, gridWidth - 1), Random.Range(1, gridHeight - 1))];
+            selectedAndUnblockedTiles.Add(select);
+        }
+        for (int i = 0; i < selectedAndUnblockedTiles.Count; i++)
+        {
+            selectedAndUnblockedTiles[i].isBlocked = false;
+        }
+        for (int i = 0; i < selectedAndUnblockedTiles.Count; i++)
+        {
+            if (i!=selectedAndUnblockedTiles.Count-1)
+            {
+                distance = Vector3.Distance(selectedAndUnblockedTiles[i].transform.position, selectedAndUnblockedTiles[i + 1].transform.position);
+            }
+            
+            Debug.Log(distance+"iteration"+":"+i);
+            
+        }
+
+        //selectedTile = tileDictionary[new Vector2Int(Random.Range(1,gridWidth-1),Random.Range(1,gridHeight-1))];
+
+        //selectedTile.isBlocked = false;
+
+        #region Doesn't work properly
+        /*
+        selectedTile = allTiles[Random.Range(0, allTiles.Count)];
         
         int multiplier = 3;
 
@@ -166,12 +195,15 @@ public class GridManager : MonoBehaviour
                 default:
                     break;
             }
-
+        
+            
         }
+        */
+        #endregion
     }
 
 
 
-       
+
 
 }
