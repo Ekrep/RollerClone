@@ -35,10 +35,10 @@ public class Enums : MonoBehaviour
 
    public enum MoveablePathCreateType
     {
-        Right,
-        Left,
+        Up,
         Down,
-        Up
+        Left,
+        Right
     }
 
 }

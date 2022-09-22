@@ -45,8 +45,6 @@ public class GameManager : MonoBehaviour
 
     public static event Action<List<Tile>> SendPathToBall;
 
-    public static event Action<Tile> SendStartingTileToBall;
-
 
 
     #region LevelControl Function
@@ -102,14 +100,6 @@ public class GameManager : MonoBehaviour
         if (SendPathToBall!=null)
         {
             SendPathToBall(tilePath);
-        }
-    }
-
-    public void OnSendStartingTileToBall(Tile startingTile)
-    {
-        if (SendStartingTileToBall!=null)
-        {
-            SendStartingTileToBall(startingTile);
         }
     }
 }

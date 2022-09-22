@@ -21,7 +21,7 @@ public class GridManager : MonoBehaviour
     public Dictionary<Vector2Int, Tile> tileDictionary = new Dictionary<Vector2Int, Tile>();
 
 
-    int x = 0;
+
 
 
     public List<Tile> allTiles;
@@ -30,15 +30,12 @@ public class GridManager : MonoBehaviour
     public Tile selectedTile;
 
 
-    public List<Tile> unblockedTiles;
 
 
 
-    private Enums.MoveablePathCreateType _firstSelection;
-    private Enums.MoveablePathCreateType _secondSelection;
 
 
-    
+
 
     private void Awake()
     {
@@ -99,121 +96,69 @@ public class GridManager : MonoBehaviour
 
     private void CreateMoveAblePath()
     {
-        selectedTile = tileDictionary[new Vector2Int(Random.Range(1, gridWidth - 1), Random.Range(1, gridHeight - 1))];
-        GameManager.Instance.OnSendStartingTileToBall(selectedTile);
+         selectedTile = allTiles[Random.Range(0, allTiles.Count)];
         
-        
+        int multiplier = 3;
 
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 50; i++)
         {
-            int pathLength = 4;
-            /*if (x<3)
-            {
-                _pathCreateType = (Enums.MoveablePathCreateType)x;
-                Debug.Log(x);
-                x++;
-                if (x==3)
-                {
-                    x = 0;
-                }
-            }*/
-            _pathCreateType= (Enums.MoveablePathCreateType)Random.Range(0, 3);
-            
+            _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 4);
             switch (_pathCreateType)
             {
 
                 case Enums.MoveablePathCreateType.Up:
 
-                    for (int j = 0; j < pathLength; j++)
+                    for (int j = 0; j < multiplier; j++)
                     {
                         if (selectedTile.upNeighbour != null&&selectedTile.upNeighbour.isBlocked)
                         {
-                           
-                            if (!unblockedTiles.Contains(selectedTile.upNeighbour))
-                            {
-
-                                Debug.Log(selectedTile + "selected");
-                                Debug.Log(selectedTile.upNeighbour + "selectedUp");
-                                selectedTile.isBlocked = false;
-                                selectedTile.upNeighbour.isBlocked = false;
-                                selectedTile = selectedTile.upNeighbour;
-                                unblockedTiles.Add(selectedTile);
-
-                            }
-                            
-                            
-                            
+                            Debug.Log("Switch up");
+                            selectedTile.isBlocked = false;
+                            selectedTile.upNeighbour.isBlocked = false;
+                            selectedTile = selectedTile.upNeighbour;
                         }
 
                     }
                     break;
                 case Enums.MoveablePathCreateType.Down:
-                   
-                    for (int j = 0; j < pathLength; j++)
+                    Debug.Log("Switch down");
+                    for (int j = 0; j < multiplier; j++)
                     {
-
                         if (selectedTile.downNeighbour != null && selectedTile.downNeighbour.isBlocked)
                         {
-                            
-                            if (!unblockedTiles.Contains(selectedTile.downNeighbour))
-                            {
-                                Debug.Log(selectedTile + "selected");
-                                Debug.Log(selectedTile.upNeighbour + "selectedDown");
-                                selectedTile.isBlocked = false;
-                                selectedTile.downNeighbour.isBlocked = false;
-                                selectedTile = selectedTile.downNeighbour;
-                                unblockedTiles.Add(selectedTile);
-                            }
-                            
-                            
+                            Debug.Log("Switch up");
+                            selectedTile.isBlocked = false;
+                            selectedTile.downNeighbour.isBlocked = false;
+                            selectedTile = selectedTile.downNeighbour;
                         }
 
                     }
                     break;
                 case Enums.MoveablePathCreateType.Left:
-                    
-                    for (int j = 0; j < pathLength; j++)
+                    Debug.Log("Switch left");
+                    for (int j = 0; j < multiplier; j++)
                     {
                         if (selectedTile.leftNeighbour != null && selectedTile.leftNeighbour.isBlocked)
                         {
-                            
-                            if (!unblockedTiles.Contains(selectedTile.leftNeighbour))
-                            {
-                                Debug.Log(selectedTile + "selected");
-                                Debug.Log(selectedTile.upNeighbour + "selectedLeft");
-                                selectedTile.isBlocked = false;
-                                selectedTile.leftNeighbour.isBlocked = false;
-                                selectedTile = selectedTile.leftNeighbour;
-                                unblockedTiles.Add(selectedTile);
-                            }
-                            
-                           
-
+                            Debug.Log("Switch up");
+                            selectedTile.isBlocked = false;
+                            selectedTile.leftNeighbour.isBlocked = false;
+                            selectedTile = selectedTile.leftNeighbour;
                         }
 
 
                     }
                     break;
                 case Enums.MoveablePathCreateType.Right:
-                    
-                    for (int j = 0; j< pathLength; j++)
+                    Debug.Log("Switch right");
+                    for (int j = 0; j< multiplier; j++)
                     {
                         if (selectedTile.rightNeighbour != null && selectedTile.rightNeighbour.isBlocked)
                         {
-                            if (!unblockedTiles.Contains(selectedTile.rightNeighbour))
-                            {
-                                Debug.Log(selectedTile + "selected");
-                                Debug.Log(selectedTile.upNeighbour + "selectedRight");
-                                selectedTile.isBlocked = false;
-                                selectedTile.rightNeighbour.isBlocked = false;
-                                selectedTile = selectedTile.rightNeighbour;
-                                unblockedTiles.Add(selectedTile);
-
-                            }
-                            
-                            
-
-
+                            Debug.Log("Switch up");
+                            selectedTile.isBlocked = false;
+                            selectedTile.rightNeighbour.isBlocked = false;
+                            selectedTile = selectedTile.rightNeighbour;
                         }
 
                     }
@@ -223,8 +168,6 @@ public class GridManager : MonoBehaviour
             }
 
         }
-
-       
     }
 
 

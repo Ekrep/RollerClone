@@ -26,13 +26,6 @@ public class BallControl : MonoBehaviour
     {
         GameManager.Tiled += GameManager_Tiled;
         GameManager.SendPathToBall += GameManager_SendPathToBall;
-        GameManager.SendStartingTileToBall += GameManager_SendStartingTileToBall;
-    }
-
-    private void GameManager_SendStartingTileToBall(Tile startingTile)
-    {
-        gameObject.transform.position = new Vector3(startingTile.transform.position.x, 0.5f, startingTile.transform.position.z);
-        _currentTile = startingTile;
     }
 
     private void GameManager_SendPathToBall(List<Tile> tilePath)
@@ -44,21 +37,21 @@ public class BallControl : MonoBehaviour
 
     private void GameManager_Tiled()
     {
-       
+        gameObject.transform.position = new Vector3(GridManager.Instance.allTiles[0].transform.position.x, 0.5f, GridManager.Instance.allTiles[0].transform.position.z);
+        _currentTile = GridManager.Instance.allTiles[0];
     }
 
     private void OnDisable()
     {
         GameManager.Tiled -= GameManager_Tiled;
         GameManager.SendPathToBall -= GameManager_SendPathToBall;
-        GameManager.SendStartingTileToBall -= GameManager_SendStartingTileToBall;
     }
 
 
     private void Update()
     {
         MoveBall();
-        
+        Debug.Log(_state);
 
     }
 
