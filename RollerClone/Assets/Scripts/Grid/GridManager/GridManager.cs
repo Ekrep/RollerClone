@@ -96,12 +96,14 @@ public class GridManager : MonoBehaviour
 
     private void CreateMoveAblePath()
     {
-         selectedTile = allTiles[Random.Range(0, allTiles.Count)];
+        selectedTile = tileDictionary[new Vector2Int(Random.Range(1, gridWidth-1), Random.Range(1, gridHeight-1))];
+        GameManager.Instance.OnSendStartPosToBall(selectedTile);    
         
-        int multiplier = 3;
+        
 
-        for (int i = 0; i < 50; i++)
+        for (int i = 0; i < 200; i++)
         {
+            int multiplier = Random.Range(1,3);
             _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 4);
             switch (_pathCreateType)
             {
@@ -110,12 +112,16 @@ public class GridManager : MonoBehaviour
 
                     for (int j = 0; j < multiplier; j++)
                     {
-                        if (selectedTile.upNeighbour != null&&selectedTile.upNeighbour.isBlocked)
+                        if (selectedTile.upNeighbour != null&&selectedTile.upNeighbour.isBlocked&&selectedTile.upNeighbour.posOnZ<(gridHeight-1)*10
+                            &&selectedTile.upNeighbour.posOnZ>10)
                         {
-                            Debug.Log("Switch up");
-                            selectedTile.isBlocked = false;
-                            selectedTile.upNeighbour.isBlocked = false;
-                            selectedTile = selectedTile.upNeighbour;
+                            
+                                Debug.Log("Switch up");
+                                selectedTile.isBlocked = false;
+                                selectedTile.upNeighbour.isBlocked = false;
+                                selectedTile = selectedTile.upNeighbour;
+                            
+                            
                         }
 
                     }
@@ -124,12 +130,16 @@ public class GridManager : MonoBehaviour
                     Debug.Log("Switch down");
                     for (int j = 0; j < multiplier; j++)
                     {
-                        if (selectedTile.downNeighbour != null && selectedTile.downNeighbour.isBlocked)
+                        if (selectedTile.downNeighbour != null && selectedTile.downNeighbour.isBlocked&&selectedTile.downNeighbour.posOnZ>10
+                            &&selectedTile.downNeighbour.posOnZ<(gridHeight-1)*10)
                         {
-                            Debug.Log("Switch up");
-                            selectedTile.isBlocked = false;
-                            selectedTile.downNeighbour.isBlocked = false;
-                            selectedTile = selectedTile.downNeighbour;
+                            
+                                Debug.Log("Switch up");
+                                selectedTile.isBlocked = false;
+                                selectedTile.downNeighbour.isBlocked = false;
+                                selectedTile = selectedTile.downNeighbour;
+                            
+                            
                         }
 
                     }
@@ -138,12 +148,16 @@ public class GridManager : MonoBehaviour
                     Debug.Log("Switch left");
                     for (int j = 0; j < multiplier; j++)
                     {
-                        if (selectedTile.leftNeighbour != null && selectedTile.leftNeighbour.isBlocked)
+                        if (selectedTile.leftNeighbour != null && selectedTile.leftNeighbour.isBlocked&&selectedTile.leftNeighbour.posOnX>10
+                            &&selectedTile.leftNeighbour.posOnX<(gridWidth-1)*10)
                         {
-                            Debug.Log("Switch up");
-                            selectedTile.isBlocked = false;
-                            selectedTile.leftNeighbour.isBlocked = false;
-                            selectedTile = selectedTile.leftNeighbour;
+                            
+                                Debug.Log("Switch up");
+                                selectedTile.isBlocked = false;
+                                selectedTile.leftNeighbour.isBlocked = false;
+                                selectedTile = selectedTile.leftNeighbour;
+                            
+                           
                         }
 
 
@@ -153,12 +167,16 @@ public class GridManager : MonoBehaviour
                     Debug.Log("Switch right");
                     for (int j = 0; j< multiplier; j++)
                     {
-                        if (selectedTile.rightNeighbour != null && selectedTile.rightNeighbour.isBlocked)
+                        if (selectedTile.rightNeighbour != null && selectedTile.rightNeighbour.isBlocked&&selectedTile.rightNeighbour.posOnX<(gridWidth-1)*10
+                            &&selectedTile.posOnX>10)
                         {
-                            Debug.Log("Switch up");
-                            selectedTile.isBlocked = false;
-                            selectedTile.rightNeighbour.isBlocked = false;
-                            selectedTile = selectedTile.rightNeighbour;
+                            
+                                Debug.Log("Switch up");
+                                selectedTile.isBlocked = false;
+                                selectedTile.rightNeighbour.isBlocked = false;
+                                selectedTile = selectedTile.rightNeighbour;
+                            
+                            
                         }
 
                     }
