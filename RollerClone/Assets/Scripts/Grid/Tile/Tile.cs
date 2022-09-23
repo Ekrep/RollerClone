@@ -6,10 +6,13 @@ public class Tile : MonoBehaviour
 {
     [HideInInspector] public int posOnX;
     [HideInInspector] public int posOnZ;
-     public bool isBlocked;
+    [HideInInspector] public bool isBlocked;
+    [HideInInspector] public bool isKeyTile;
     public List<Tile> neighbourTiles;
-    [HideInInspector]public MeshRenderer tileColor;
+    [HideInInspector] public MeshRenderer tileColor;
+    [HideInInspector] public Vector2Int tilePosVec2;
 
+    public GameObject cube;
 
     public Tile upNeighbour;
     public Tile downNeighbour;
@@ -34,14 +37,14 @@ public class Tile : MonoBehaviour
 
     private void Start()
     {
-        
+
         tileColor = GetComponent<MeshRenderer>();
         
-       
+
     }
     private void Update()
     {
-        if (tileColor.material.color!=Color.red)
+        if (tileColor.material.color != Color.red)
         {
             if (isBlocked)
             {
@@ -53,7 +56,19 @@ public class Tile : MonoBehaviour
         {
             tileColor.material.color = Color.white;
         }
-       
+        /*if (isKeyTile)
+        {
+            tileColor.material.color = Color.black;
+        }*/
+
+        /*if (isBlocked)
+        {
+            cube.SetActive(true);
+        }
+        else
+        {
+            cube.SetActive(false);
+        }*/
     }
 
 
