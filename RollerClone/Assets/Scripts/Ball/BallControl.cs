@@ -58,7 +58,7 @@ public class BallControl : MonoBehaviour
     private void Update()
     {
         MoveBall();
-        Debug.Log(_state);
+        //Debug.Log(_state);
 
     }
 

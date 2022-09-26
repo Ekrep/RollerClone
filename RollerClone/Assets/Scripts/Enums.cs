@@ -38,7 +38,8 @@ public class Enums : MonoBehaviour
         Up,
         Down,
         Left,
-        Right
+        Right,
+        Base
     }
 
 }

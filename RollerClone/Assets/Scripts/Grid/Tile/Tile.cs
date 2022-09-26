@@ -56,12 +56,12 @@ public class Tile : MonoBehaviour
         {
             tileColor.material.color = Color.white;
         }
-        /*if (isKeyTile)
+       /* if (isKeyTile)
         {
             tileColor.material.color = Color.black;
         }*/
 
-        /*if (isBlocked)
+       /* if (isBlocked)
         {
             cube.SetActive(true);
         }
