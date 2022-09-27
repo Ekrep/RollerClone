@@ -56,10 +56,18 @@ public class Tile : MonoBehaviour
         {
             tileColor.material.color = Color.white;
         }
-       /* if (isKeyTile)
+        if (isKeyTile)
         {
-            tileColor.material.color = Color.black;
-        }*/
+            if (Input.GetKey(KeyCode.K))
+            {
+                tileColor.material.color = Color.black;
+            }
+            if (Input.GetKeyUp(KeyCode.K))
+            {
+                tileColor.material.color = Color.white;
+            }
+            
+        }
 
        /* if (isBlocked)
         {
