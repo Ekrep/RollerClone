@@ -68,7 +68,7 @@ public class GridManager : MonoBehaviour
                 go.GetComponent<Tile>().posOnZ = y;
                 go.GetComponent<Tile>().tilePosVec2 = new Vector2Int(x, y);
                 go.transform.SetParent(_tileParent);
-                go.name = "Tile" + "(" + x + "," + y + ")";
+                go.name = "Tile" + "(" + x  + "," + y  + ")";
                 allTiles.Add(go.GetComponent<Tile>());
                 tileDictionary.Add(new Vector2Int(x, y), go.GetComponent<Tile>());
 
@@ -93,17 +93,14 @@ public class GridManager : MonoBehaviour
 
     private void CreateRealPathThisTime()
     {
-        selectedTile = tileDictionary[new Vector2Int(Random.Range(1, gridWidth - 2), Random.Range(1, gridHeight - 2))];
+        selectedTile= tileDictionary[new Vector2Int(Random.Range(1, gridWidth - 2), Random.Range(1, gridHeight - 2))];
         GameManager.Instance.OnSendStartPosToBall(selectedTile);
 
 
-        Enums.MoveablePathCreateType oldPathCreateType = Enums.MoveablePathCreateType.Base;
+        Enums.MoveablePathCreateType oldPathCreateType=Enums.MoveablePathCreateType.Base;
 
         _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 4);
 
-
-        
-        //gittiði yönün tersine gitmeme ekle
         int iterationCount = 50;
         int pathWayIterationCount;
         for (int i = 0; i < iterationCount; i++)
@@ -111,82 +108,53 @@ public class GridManager : MonoBehaviour
             switch (_pathCreateType)
             {
                 case Enums.MoveablePathCreateType.Up:
-                   
-                    if (!selectedTile.upNeighbour.isKeyTile)
+                    Debug.Log(oldPathCreateType + "oldpathway");
+                    if (oldPathCreateType!=Enums.MoveablePathCreateType.Down)
                     {
-                        List<Tile> visitedTiles = new List<Tile>();
-                        Tile holder;
-                        bool isBreak = false;
-                        holder = selectedTile;
+                        Debug.Log("Denedim U");
                         pathWayIterationCount = Random.Range(1, FindRandomDir(selectedTile, _pathCreateType));
                         selectedTile.isBlocked = false;
-                        if (selectedTile.downNeighbour.isBlocked)
+                        if (selectedTile.downNeighbour.isBlocked )
                         {
                             selectedTile.downNeighbour.isKeyTile = true;
                         }
 
-                        Debug.Log("Up" + " " + pathWayIterationCount);
                         for (int j = 0; j < pathWayIterationCount; j++)
                         {
                             if (!selectedTile.upNeighbour.isKeyTile && selectedTile.upNeighbour.posOnZ != gridHeight - 1)
                             {
-                                //if delete this "if" makes more branch but bugged!
-                                if (selectedTile.leftNeighbour.isBlocked||selectedTile.rightNeighbour.isBlocked)
-                                {
-                                    selectedTile = selectedTile.upNeighbour;
-                                    selectedTile.isBlocked = false;
-                                    visitedTiles.Add(selectedTile);
-                                }
-                          
+                                Debug.Log("up" + pathWayIterationCount);
+                                selectedTile = selectedTile.upNeighbour;
+                                selectedTile.isBlocked = false;
+                                oldPathCreateType = _pathCreateType;
                             }
-                            else
-                            {
-                                isBreak = true;
-                                Debug.Log("UPBREAK");
-                                //holder.downNeighbour.isKeyTile = false;
-                                if (selectedTile.downNeighbour.isBlocked)
-                                {
-                                    selectedTile.upNeighbour.isKeyTile = true;
-                                }
-                                if (selectedTile.upNeighbour.posOnZ==gridHeight-1&&visitedTiles.Count<2&&selectedTile.downNeighbour.isBlocked)
-                                {
-                                    selectedTile.downNeighbour.isKeyTile = false;
-                                    _pathCreateType = Enums.MoveablePathCreateType.Down;
-                                }
-                                else
-                                {
-                                    _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
-                                }
-                                
-                                break;
-                            }
+
 
                         }
                         if (selectedTile.upNeighbour.isBlocked)
                         {
                             selectedTile.upNeighbour.isKeyTile = true;
                         }
-                        if (!isBreak)
+                        if (selectedTile.leftNeighbour.posOnX <= 1)
                         {
-                            _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
+                            _pathCreateType = Enums.MoveablePathCreateType.Right;
                         }
-                        
+                        else
+                        {
+                            _pathCreateType = Enums.MoveablePathCreateType.Left;
+                        }
+                        //_pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
+
                     }
-                    else
-                    {
-                        _pathCreateType = Enums.MoveablePathCreateType.Left;
-                    }
-                   
 
                     break;
+
+
                 case Enums.MoveablePathCreateType.Down:
-                   
-                    if (!selectedTile.downNeighbour.isKeyTile)
+                    Debug.Log(oldPathCreateType + "oldpathway");
+                    if (oldPathCreateType!=Enums.MoveablePathCreateType.Up)
                     {
-                        List<Tile> visitedTiles = new List<Tile>();
-                        Tile holder;
-                        bool isBreak = false;
-                        holder = selectedTile;
+                        Debug.Log("Denedim D");
                         pathWayIterationCount = Random.Range(1, FindRandomDir(selectedTile, _pathCreateType));
                         selectedTile.isBlocked = false;
                         if (selectedTile.upNeighbour.isBlocked)
@@ -194,193 +162,118 @@ public class GridManager : MonoBehaviour
                             selectedTile.upNeighbour.isKeyTile = true;
                         }
 
-                        Debug.Log("Down" + " " + pathWayIterationCount);
                         for (int j = 0; j < pathWayIterationCount; j++)
                         {
                             if (!selectedTile.downNeighbour.isKeyTile && selectedTile.downNeighbour.posOnZ >= 1)
                             {
-                                if (selectedTile.leftNeighbour.isBlocked||selectedTile.rightNeighbour.isBlocked)
-                                {
-                                    selectedTile = selectedTile.downNeighbour;
-                                    selectedTile.isBlocked = false;
-                                    visitedTiles.Add(selectedTile);
-                                }
-                                
+                                Debug.Log("down" + pathWayIterationCount);
+                                selectedTile = selectedTile.downNeighbour;
+                                selectedTile.isBlocked = false;
+                                oldPathCreateType = _pathCreateType;
                             }
-                            else
-                            {
-                                isBreak = true;
-                                Debug.Log("DOWNBREAK");
-                                //holder.upNeighbour.isKeyTile = false;
-                                if (selectedTile.downNeighbour.isBlocked)
-                                {
-                                    selectedTile.downNeighbour.isKeyTile = true;
-                                }
-                                if (selectedTile.downNeighbour.posOnZ==0&&visitedTiles.Count<2&&selectedTile.upNeighbour.isBlocked)
-                                {
-                                    selectedTile.upNeighbour.isKeyTile = false;
-                                    _pathCreateType = Enums.MoveablePathCreateType.Up;
-                                }
-                                else
-                                {
-                                    _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
-                                }
-                                 
-                                break;
-                            }
+
 
                         }
                         if (selectedTile.downNeighbour.isBlocked)
                         {
-                            selectedTile.downNeighbour.isKeyTile = true;
+                            selectedTile.upNeighbour.isKeyTile = true;
                         }
-                        if (!isBreak)
+                        if (selectedTile.leftNeighbour.posOnX <= 1)
                         {
-                            _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
+                            _pathCreateType = Enums.MoveablePathCreateType.Right;
                         }
-                        
-                    }
-                    else
-                    {
-                        _pathCreateType = Enums.MoveablePathCreateType.Right;
-                    }
-                  
+                        else
+                        {
+                            _pathCreateType = Enums.MoveablePathCreateType.Left;
+                        }
+                        // _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
 
+
+                    }
                     break;
+
+
                 case Enums.MoveablePathCreateType.Left:
-                    if (!selectedTile.leftNeighbour.isKeyTile)
+                    Debug.Log(oldPathCreateType + "oldpathway");
+                    if (oldPathCreateType!=Enums.MoveablePathCreateType.Right)
                     {
-                        List<Tile> visitedTiles = new List<Tile>();
-                        Tile holder;
-                        holder = selectedTile;
-                        bool isBreak=false;
+                        Debug.Log("Denedim L");
                         pathWayIterationCount = Random.Range(1, FindRandomDir(selectedTile, _pathCreateType));
                         selectedTile.isBlocked = false;
-                        if (selectedTile.rightNeighbour.isBlocked)
+                        if (selectedTile.rightNeighbour.isBlocked )
                         {
                             selectedTile.rightNeighbour.isKeyTile = true;
                         }
 
-                        Debug.Log("Left" + " " + pathWayIterationCount);
                         for (int j = 0; j < pathWayIterationCount; j++)
                         {
                             if (!selectedTile.leftNeighbour.isKeyTile && selectedTile.leftNeighbour.posOnX >= 1)
                             {
-                                if (selectedTile.upNeighbour.isBlocked||selectedTile.downNeighbour.isBlocked)
-                                {
-                                    selectedTile = selectedTile.leftNeighbour;
-                                    selectedTile.isBlocked = false;
-                                    visitedTiles.Add(selectedTile);
-                                }
-                                
+                                Debug.Log("left" + pathWayIterationCount);
+                                selectedTile = selectedTile.leftNeighbour;
+                                selectedTile.isBlocked = false;
+                                oldPathCreateType = _pathCreateType;
                             }
-                            else
-                            {
-                                isBreak = true;
-                                Debug.Log("LEFTBREAK");
-                                //holder.rightNeighbour.isKeyTile = false;
-                                if (selectedTile.leftNeighbour.isBlocked)
-                                {
-                                    selectedTile.leftNeighbour.isKeyTile = true;
-                                }
-                                if (selectedTile.leftNeighbour.posOnX==0&&visitedTiles.Count<2&&selectedTile.rightNeighbour.isBlocked)
-                                {
-                                    selectedTile.rightNeighbour.isKeyTile = false;
-                                    _pathCreateType = Enums.MoveablePathCreateType.Right;
-                                }
-                                else
-                                {
-                                    _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
-                                }
-                                
-                                break;
-                            }
+
 
                         }
                         if (selectedTile.leftNeighbour.isBlocked)
                         {
                             selectedTile.leftNeighbour.isKeyTile = true;
                         }
-                        if (!isBreak)
+                        if (selectedTile.upNeighbour.posOnZ >= gridHeight - 2)
                         {
-                            _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
+                            _pathCreateType = Enums.MoveablePathCreateType.Down;
                         }
-                        
+                        else
+                        {
+                            _pathCreateType = Enums.MoveablePathCreateType.Up;
+                        }
+                        //_pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
 
                     }
-                    else
-                    {
-                        _pathCreateType = Enums.MoveablePathCreateType.Down;
-                    }
-                   
 
                     break;
+
+
                 case Enums.MoveablePathCreateType.Right:
-                    if (!selectedTile.rightNeighbour.isKeyTile)
+                    Debug.Log(oldPathCreateType+"oldpathway");
+                    if (oldPathCreateType!=Enums.MoveablePathCreateType.Right)
                     {
-                        List<Tile> visitedTiles = new List<Tile>();
-                        Tile holder;
-                        bool isBreak=false;
-                        holder = selectedTile;
+                        Debug.Log("Denedim R");
                         pathWayIterationCount = Random.Range(1, FindRandomDir(selectedTile, _pathCreateType));
                         selectedTile.isBlocked = false;
-                        if (selectedTile.leftNeighbour.isBlocked)
+                        if (selectedTile.leftNeighbour.isBlocked )
                         {
                             selectedTile.leftNeighbour.isKeyTile = true;
                         }
 
-                        Debug.Log("Right" + " " + pathWayIterationCount);
                         for (int j = 0; j < pathWayIterationCount; j++)
                         {
                             if (!selectedTile.rightNeighbour.isKeyTile && selectedTile.rightNeighbour.posOnX != gridWidth - 1)
                             {
-                                if (selectedTile.upNeighbour.isBlocked||selectedTile.downNeighbour.isBlocked)
-                                {
-                                    selectedTile = selectedTile.rightNeighbour;
-                                    selectedTile.isBlocked = false;
-                                    visitedTiles.Add(selectedTile);
-                                }
-                                
+                                Debug.Log("right" + pathWayIterationCount);
+                                selectedTile = selectedTile.rightNeighbour;
+                                selectedTile.isBlocked = false;
+                                oldPathCreateType = _pathCreateType;
                             }
-                            else
-                            {
-                                isBreak = true;
-                                Debug.Log("RIGHTBREAK");
-                                //holder.leftNeighbour.isKeyTile = false;
-                                if (selectedTile.rightNeighbour.isBlocked)
-                                {
-                                    selectedTile.rightNeighbour.isKeyTile = true;
-                                }
-                                if (selectedTile.rightNeighbour.posOnX==gridWidth-1&&visitedTiles.Count<2&&selectedTile.leftNeighbour.isBlocked)
-                                {
 
-                                    selectedTile.leftNeighbour.isKeyTile = false;                                    
-                                    _pathCreateType = Enums.MoveablePathCreateType.Left;
-                                }
-                                else
-                                {
-                                    _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
-                                }
-                                
-                                break;
-                                
-                            }
+
                         }
                         if (selectedTile.rightNeighbour.isBlocked)
                         {
                             selectedTile.rightNeighbour.isKeyTile = true;
                         }
-                        if (!isBreak)
+                        if (selectedTile.upNeighbour.posOnZ <= gridHeight - 2)
                         {
-                            _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
+                            _pathCreateType = Enums.MoveablePathCreateType.Down;
                         }
-                        
+                        else
+                        {
+                            _pathCreateType = Enums.MoveablePathCreateType.Up;
+                        }
+                        //_pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
                     }
-                    else
-                    {
-                        _pathCreateType = Enums.MoveablePathCreateType.Up;
-                    }
-                     
 
                     break;
                 case Enums.MoveablePathCreateType.Base:
@@ -389,37 +282,432 @@ public class GridManager : MonoBehaviour
                     break;
             }
         }
+    }
+
+    private void CreatePath()
+    {
+        selectedTile = tileDictionary[new Vector2Int(Random.Range(1, gridWidth - 2), Random.Range(1, gridHeight - 2))];
+        Tile firstSelectedTile = selectedTile;
+        GameManager.Instance.OnSendStartPosToBall(selectedTile);
+
+        _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 4);
+
+        Enums.MoveablePathCreateType oldPathCreateBehaviour = Enums.MoveablePathCreateType.Base;
 
 
 
+        bool canMoveOnYAxis = true;
+        bool canMoveOnXAxis = true;
+
+        int iterationCount = 50;
+        int randomPathWayCount = 0;
 
 
-        //GArbage
-        /*for (int i = 0; i < iterationCount; i++)
+        for (int i = 0; i < iterationCount; i++)
         {
-            switch (_pathCreateType)
+            //------------------------------------------------------>
+            //UP
+            if (_pathCreateType == Enums.MoveablePathCreateType.Up)
             {
-                case Enums.MoveablePathCreateType.Up:
-                    //Debug.Log(oldPathCreateType + "oldpathway");
+                Debug.Log("SELECTED UP \n");
+                randomPathWayCount = Random.Range(1, FindRandomDir(selectedTile, _pathCreateType));
+                if (canMoveOnYAxis && _pathCreateType != oldPathCreateBehaviour)
+                {
+                    oldPathCreateBehaviour = _pathCreateType;
+                    Debug.Log("up \n" + randomPathWayCount);
+                    bool upTileReachedLimit = false;
+                    if (!selectedTile.upNeighbour.isKeyTile && selectedTile.upNeighbour.posOnZ != (gridHeight * 10) - 20)
+                    {
+                        selectedTile.isBlocked = false;
+                        selectedTile.downNeighbour.isKeyTile = true;
+                    }
 
-                    //Debug.Log("Denedim U");
-                    pathWayIterationCount = Random.Range(1, FindRandomDir(selectedTile, _pathCreateType));
-                    selectedTile.isBlocked = false;
-                    if (selectedTile.downNeighbour.isBlocked)
+                    for (int j = 0; j < randomPathWayCount; j++)
+                    {
+                        if (!selectedTile.upNeighbour.isKeyTile)
+                        {
+                            if (selectedTile.posOnZ == (gridHeight * 10) - 20)
+                            {
+                                //selectedTile = selectedTile.upNeighbour;
+                                selectedTile.isBlocked = false;
+                                _pathCreateType = Enums.MoveablePathCreateType.Right;
+
+                                upTileReachedLimit = true;
+                                Debug.Log("BREAK UP");
+                                break;
+                                /*if (selectedTile.upNeighbour.leftNeighbour.posOnX==)
+                                {
+
+                                }*/
+                            }
+                            else
+                            {
+                                if (selectedTile.upNeighbour.isBlocked)
+                                {
+                                    selectedTile.isBlocked = false;
+                                    selectedTile = selectedTile.upNeighbour;
+                                }
+                                else
+                                {
+                                    _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
+                                    break;
+                                }
+
+                            }
+
+                            //canMoveOnYAxis = false;
+                            //canMoveOnXAxis = true;
+
+
+                        }
+                        else
+                        {
+                            _pathCreateType = Enums.MoveablePathCreateType.Right;
+                            break;
+                        }
+
+                    }
+                    if (selectedTile.upNeighbour.isBlocked && !upTileReachedLimit)
+                    {
+                        selectedTile.upNeighbour.isKeyTile = true;
+                    }
+
+
+                    if (!upTileReachedLimit)
+                    {
+                        _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
+
+                    }
+
+                }
+                else
+                {
+                    if (oldPathCreateBehaviour != Enums.MoveablePathCreateType.Right || oldPathCreateBehaviour != Enums.MoveablePathCreateType.Left)
+                    {
+                        _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
+                    }
+
+                }
+
+
+            }
+            //------------------------------------------------------>
+            //DOWN
+            if (_pathCreateType == Enums.MoveablePathCreateType.Down)
+            {
+                Debug.Log("SELECTED DOWN \n");
+                randomPathWayCount = Random.Range(1, FindRandomDir(selectedTile, _pathCreateType));
+                if (canMoveOnYAxis && _pathCreateType != oldPathCreateBehaviour)
+                {
+                    oldPathCreateBehaviour = _pathCreateType;
+                    Debug.Log("down \n" + randomPathWayCount);
+                    bool downTileReachedLimit = false;
+                    if (!selectedTile.downNeighbour.isKeyTile && selectedTile.downNeighbour.posOnZ > 10)
+                    {
+                        selectedTile.isBlocked = false;
+                        selectedTile.upNeighbour.isKeyTile = true;
+                    }
+
+                    for (int j = 0; j < randomPathWayCount; j++)
+                    {
+                        if (!selectedTile.downNeighbour.isKeyTile)
+                        {
+                            if (selectedTile.posOnZ == 10)
+                            {
+                                //selectedTile = selectedTile.downNeighbour;
+                                selectedTile.isBlocked = false;
+                                _pathCreateType = Enums.MoveablePathCreateType.Left;
+
+                                downTileReachedLimit = true;
+                                Debug.Log("BREAK DOWN");
+                                break;
+                            }
+                            else
+                            {
+                                if (selectedTile.downNeighbour.isBlocked)
+                                {
+                                    selectedTile.isBlocked = false;
+                                    selectedTile = selectedTile.downNeighbour;
+                                }
+                                else
+                                {
+                                    _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
+                                    break;
+                                }
+
+                            }
+
+                            //canMoveOnYAxis = false;
+                            //canMoveOnXAxis = true;
+
+
+                        }
+                        else
+                        {
+                            _pathCreateType = Enums.MoveablePathCreateType.Left;
+                            break;
+                        }
+
+                    }
+                    if (selectedTile.downNeighbour.isBlocked && !downTileReachedLimit)
                     {
                         selectedTile.downNeighbour.isKeyTile = true;
                     }
 
-                    for (int j = 0; j < pathWayIterationCount; j++)
+                    if (!downTileReachedLimit)
                     {
-                        if (!selectedTile.upNeighbour.isKeyTile && selectedTile.upNeighbour.posOnZ != gridHeight - 1)
+                        _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
+
+                    }
+
+
+                }
+                else
+                {
+                    if (oldPathCreateBehaviour != Enums.MoveablePathCreateType.Left || oldPathCreateBehaviour != Enums.MoveablePathCreateType.Right)
+                    {
+                        _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
+                    }
+
+                }
+
+
+
+            }
+            //------------------------------------------------------>
+            //LEFT
+            if (_pathCreateType == Enums.MoveablePathCreateType.Left)
+            {
+                Debug.Log("SELECTED LEFT \n");
+                randomPathWayCount = Random.Range(1, FindRandomDir(selectedTile, _pathCreateType));
+                if (canMoveOnXAxis && _pathCreateType != oldPathCreateBehaviour)
+                {
+                    oldPathCreateBehaviour = _pathCreateType;
+                    Debug.Log("left \n" + randomPathWayCount);
+                    bool leftTileReachedLimit = false;
+                    if (!selectedTile.leftNeighbour.isKeyTile && selectedTile.leftNeighbour.posOnX > 10)
+                    {
+                        selectedTile.isBlocked = false;
+                        selectedTile.rightNeighbour.isKeyTile = true;
+                    }
+
+                    for (int j = 0; j < randomPathWayCount; j++)
+                    {
+                        if (!selectedTile.leftNeighbour.isKeyTile)
                         {
-                            Debug.Log("up" + pathWayIterationCount);
-                            selectedTile = selectedTile.upNeighbour;
-                            selectedTile.isBlocked = false;
-                            visitedTiles.Add(selectedTile);
-                            oldPathCreateType = _pathCreateType;
+                            if (selectedTile.posOnX == 10)
+                            {
+                                //selectedTile = selectedTile.leftNeighbour;
+                                selectedTile.isBlocked = false;
+                                _pathCreateType = Enums.MoveablePathCreateType.Down;
+
+                                leftTileReachedLimit = true;
+                                Debug.Log("BREAK LEFT");
+                                break;
+                            }
+                            else
+                            {
+                                if (selectedTile.leftNeighbour.isBlocked)
+                                {
+                                    selectedTile.isBlocked = false;
+                                    selectedTile = selectedTile.leftNeighbour;
+                                }
+                                else
+                                {
+                                    _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
+                                    break;
+
+                                }
+
+
+                            }
+
+                            //canMoveOnYAxis = true;
+                            //canMoveOnXAxis = false;
+
+
+
                         }
+                        else
+                        {
+                            _pathCreateType = Enums.MoveablePathCreateType.Down;
+                            break;
+
+                        }
+
+                    }
+                    if (selectedTile.leftNeighbour.isBlocked && !leftTileReachedLimit)
+                    {
+                        selectedTile.leftNeighbour.isKeyTile = true;
+                    }
+
+                    if (!leftTileReachedLimit)
+                    {
+                        _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
+
+                    }
+
+
+                }
+                else
+                {
+                    if (oldPathCreateBehaviour != Enums.MoveablePathCreateType.Up || oldPathCreateBehaviour != Enums.MoveablePathCreateType.Down)
+                    {
+                        _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
+                    }
+
+                }
+
+
+
+            }
+            //------------------------------------------------------>
+            //RIGHT
+            if (_pathCreateType == Enums.MoveablePathCreateType.Right)
+            {
+                Debug.Log("SELECTED RIGHT \n");
+                randomPathWayCount = Random.Range(1, FindRandomDir(selectedTile, _pathCreateType));
+                if (canMoveOnXAxis && _pathCreateType != oldPathCreateBehaviour)
+                {
+                    oldPathCreateBehaviour = _pathCreateType;
+                    Debug.Log("Right \n" + randomPathWayCount);
+                    bool rightTileReachedLimit = false;
+                    if (!selectedTile.rightNeighbour.isKeyTile && selectedTile.rightNeighbour.posOnX != (gridWidth * 10) - 20)
+                    {
+                        selectedTile.isBlocked = false;
+                        selectedTile.leftNeighbour.isKeyTile = true;
+                    }
+
+                    for (int j = 0; j < randomPathWayCount; j++)
+                    {
+                        if (!selectedTile.rightNeighbour.isKeyTile)
+                        {
+                            if (selectedTile.posOnX == (gridWidth * 10) - 20)
+                            {
+                                //selectedTile = selectedTile.rightNeighbour;
+                                selectedTile.isBlocked = false;
+                                _pathCreateType = Enums.MoveablePathCreateType.Up;
+
+                                rightTileReachedLimit = true;
+                                Debug.Log("BREAK RIGHT");
+                                break;
+                            }
+                            else
+                            {
+                                if (selectedTile.rightNeighbour.isBlocked)
+                                {
+                                    selectedTile.isBlocked = false;
+                                    selectedTile = selectedTile.rightNeighbour;
+                                }
+                                else
+                                {
+                                    _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
+                                    break;
+
+                                }
+
+
+                            }
+
+                            //canMoveOnYAxis = true;
+                            //canMoveOnXAxis = false;
+
+
+
+                        }
+                        else
+                        {
+                            _pathCreateType = Enums.MoveablePathCreateType.Up;
+                            break;
+                        }
+
+
+                    }
+                    if (selectedTile.rightNeighbour.isBlocked && !rightTileReachedLimit)
+                    {
+                        selectedTile.rightNeighbour.isKeyTile = true;
+                    }
+                    if (!rightTileReachedLimit)
+                    {
+                        _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
+
+                    }
+
+
+
+                }
+                else
+                {
+                    if (oldPathCreateBehaviour != Enums.MoveablePathCreateType.Up || oldPathCreateBehaviour != Enums.MoveablePathCreateType.Down)
+                    {
+                        _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
+                    }
+
+                }
+
+
+            }
+        }
+    }
+
+
+
+    private void CreateMoveAblePath()
+    {
+        selectedTile = tileDictionary[new Vector2Int(Random.Range(1, gridWidth - 2), Random.Range(1, gridHeight - 2))];
+        Tile firstSelectedTile = selectedTile;
+        GameManager.Instance.OnSendStartPosToBall(selectedTile);
+
+
+        Enums.MoveablePathCreateType oldPathType = Enums.MoveablePathCreateType.Base;
+        _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 4);
+
+
+        int iterationCount = 250;
+        int randomYPathWayCount = 0;
+        int randomXPathWayCount = 0;
+        for (int i = 0; i < iterationCount; i++)
+        {
+
+            switch (_pathCreateType)
+            {
+
+
+                case Enums.MoveablePathCreateType.Up:
+                    if (oldPathType == Enums.MoveablePathCreateType.Down)
+                    {
+                        break;
+                    }
+                    randomYPathWayCount = Random.Range(1, FindRandomDir(selectedTile, _pathCreateType));
+                    oldPathType = Enums.MoveablePathCreateType.Up;
+                    if (selectedTile.downNeighbour.isBlocked)
+                    {
+
+                        selectedTile.downNeighbour.isKeyTile = true;
+
+                    }
+
+                    selectedTile.isBlocked = false;
+                    for (int j = 0; j < randomYPathWayCount; j++)
+                    {
+                        if (!selectedTile.upNeighbour.isKeyTile && selectedTile.upNeighbour.posOnZ < (gridHeight * 10) - 10)
+                        {
+                            if (selectedTile.upNeighbour.isBlocked)
+                            {
+                                Debug.Log("Gidiyorum UP" + randomYPathWayCount);
+                                selectedTile = selectedTile.upNeighbour;
+                                selectedTile.isBlocked = false;
+                            }
+                            else
+                            {
+                                selectedTile = firstSelectedTile;
+                                _pathCreateType = FirstPathCreateBehaviour(oldPathType);
+                                break;
+
+                            }
+
+                        }
+                        Debug.Log("KEYTILE UP");
 
 
                     }
@@ -427,15 +715,17 @@ public class GridManager : MonoBehaviour
                     {
                         selectedTile.upNeighbour.isKeyTile = true;
                     }
-                    if (selectedTile.leftNeighbour.posOnX <= 1)
-                    {
-                        _pathCreateType = Enums.MoveablePathCreateType.Right;
-                    }
-                    else
-                    {
-                        _pathCreateType = Enums.MoveablePathCreateType.Left;
-                    }
-                    //_pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
+
+
+                    _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
+                    oldPathType = _pathCreateType;
+
+                    // Debug.Log("0 UP");
+                    //_pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 4);
+
+
+
+
 
 
 
@@ -443,42 +733,55 @@ public class GridManager : MonoBehaviour
 
 
                 case Enums.MoveablePathCreateType.Down:
-                    //Debug.Log(oldPathCreateType + "oldpathway");
-
-                    //Debug.Log("Denedim D");
-                    pathWayIterationCount = Random.Range(1, FindRandomDir(selectedTile, _pathCreateType));
+                    if (oldPathType == Enums.MoveablePathCreateType.Up)
+                    {
+                        break;
+                    }
+                    randomYPathWayCount = Random.Range(1, FindRandomDir(selectedTile, _pathCreateType));
+                    oldPathType = Enums.MoveablePathCreateType.Down;
                     selectedTile.isBlocked = false;
                     if (selectedTile.upNeighbour.isBlocked)
                     {
                         selectedTile.upNeighbour.isKeyTile = true;
                     }
 
-                    for (int j = 0; j < pathWayIterationCount; j++)
+
+                    for (int j = 0; j < randomYPathWayCount; j++)
                     {
-                        if (!selectedTile.downNeighbour.isKeyTile && selectedTile.downNeighbour.posOnZ >= 1)
+                        if (!selectedTile.downNeighbour.isKeyTile && selectedTile.downNeighbour.posOnZ > 10)
                         {
-                            Debug.Log("down" + pathWayIterationCount);
-                            selectedTile = selectedTile.downNeighbour;
-                            selectedTile.isBlocked = false;
-                            visitedTiles.Add(selectedTile);
-                            oldPathCreateType = _pathCreateType;
+                            if (selectedTile.downNeighbour.isBlocked)
+                            {
+                                Debug.Log("Gidiyorum DOWN" + randomYPathWayCount);
+                                selectedTile = selectedTile.downNeighbour;
+                                selectedTile.isBlocked = false;
+
+                            }
+                            else
+                            {
+                                selectedTile = firstSelectedTile;
+                                _pathCreateType = FirstPathCreateBehaviour(oldPathType);
+                                break;
+
+
+                            }
+
                         }
 
+                        Debug.Log("KEYTILE DOWN");
 
                     }
                     if (selectedTile.downNeighbour.isBlocked)
                     {
-                        selectedTile.upNeighbour.isKeyTile = true;
+                        selectedTile.downNeighbour.isKeyTile = true;
                     }
-                    if (selectedTile.leftNeighbour.posOnX <= 1)
-                    {
-                        _pathCreateType = Enums.MoveablePathCreateType.Right;
-                    }
-                    else
-                    {
-                        _pathCreateType = Enums.MoveablePathCreateType.Left;
-                    }
-                    // _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
+
+
+                    _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
+                    oldPathType = _pathCreateType;
+
+                    //Debug.Log("0 DOWN");
+                    //_pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 4);
 
 
 
@@ -486,42 +789,52 @@ public class GridManager : MonoBehaviour
 
 
                 case Enums.MoveablePathCreateType.Left:
-                    //Debug.Log(oldPathCreateType + "oldpathway");
-
-                    //Debug.Log("Denedim L");
-                    pathWayIterationCount = Random.Range(1, FindRandomDir(selectedTile, _pathCreateType));
+                    if (oldPathType == Enums.MoveablePathCreateType.Left)
+                    {
+                        break;
+                    }
+                    randomXPathWayCount = Random.Range(1, FindRandomDir(selectedTile, _pathCreateType));
+                    oldPathType = Enums.MoveablePathCreateType.Left;
                     selectedTile.isBlocked = false;
                     if (selectedTile.rightNeighbour.isBlocked)
                     {
                         selectedTile.rightNeighbour.isKeyTile = true;
                     }
 
-                    for (int j = 0; j < pathWayIterationCount; j++)
+                    for (int j = 0; j < randomXPathWayCount; j++)
                     {
-                        if (!selectedTile.leftNeighbour.isKeyTile && selectedTile.leftNeighbour.posOnX >= 1)
+                        if (!selectedTile.leftNeighbour.isKeyTile && selectedTile.leftNeighbour.posOnX > 10)
                         {
-                            Debug.Log("left" + pathWayIterationCount);
-                            selectedTile = selectedTile.leftNeighbour;
-                            selectedTile.isBlocked = false;
-                            visitedTiles.Add(selectedTile);
-                            oldPathCreateType = _pathCreateType;
-                        }
+                            if (selectedTile.leftNeighbour.isBlocked)
+                            {
+                                Debug.Log("Gidiyorum LEFT" + randomXPathWayCount);
+                                selectedTile = selectedTile.leftNeighbour;
+                                selectedTile.isBlocked = false;
+                            }
+                            else
+                            {
 
+                                selectedTile = firstSelectedTile;
+                                _pathCreateType = FirstPathCreateBehaviour(oldPathType);
+                                break;
+
+                            }
+
+                        }
+                        Debug.Log("KEYTILE LEFT");
 
                     }
                     if (selectedTile.leftNeighbour.isBlocked)
                     {
                         selectedTile.leftNeighbour.isKeyTile = true;
+
                     }
-                    if (selectedTile.upNeighbour.posOnZ >= gridHeight - 2)
-                    {
-                        _pathCreateType = Enums.MoveablePathCreateType.Down;
-                    }
-                    else
-                    {
-                        _pathCreateType = Enums.MoveablePathCreateType.Up;
-                    }
-                    //_pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
+
+                    _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
+                    oldPathType = _pathCreateType;
+
+                    //Debug.Log("0 LEFT");
+                    //_pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 4);
 
 
 
@@ -529,53 +842,219 @@ public class GridManager : MonoBehaviour
 
 
                 case Enums.MoveablePathCreateType.Right:
-                    //Debug.Log(oldPathCreateType+"oldpathway");
-
-                    //Debug.Log("Denedim R");
-                    pathWayIterationCount = Random.Range(1, FindRandomDir(selectedTile, _pathCreateType));
+                    if (oldPathType == Enums.MoveablePathCreateType.Right)
+                    {
+                        break;
+                    }
+                    randomXPathWayCount = Random.Range(1, FindRandomDir(selectedTile, _pathCreateType));
+                    oldPathType = Enums.MoveablePathCreateType.Right;
                     selectedTile.isBlocked = false;
                     if (selectedTile.leftNeighbour.isBlocked)
                     {
                         selectedTile.leftNeighbour.isKeyTile = true;
                     }
 
-                    for (int j = 0; j < pathWayIterationCount; j++)
+                    for (int j = 0; j < randomXPathWayCount; j++)
                     {
-                        if (!selectedTile.rightNeighbour.isKeyTile && selectedTile.rightNeighbour.posOnX != gridWidth - 1)
+                        if (!selectedTile.rightNeighbour.isKeyTile && selectedTile.rightNeighbour.posOnX < (gridWidth * 10) - 10)
                         {
-                            Debug.Log("right" + pathWayIterationCount);
-                            selectedTile = selectedTile.rightNeighbour;
-                            selectedTile.isBlocked = false;
-                            visitedTiles.Add(selectedTile);
-                            oldPathCreateType = _pathCreateType;
-                        }
+                            if (selectedTile.rightNeighbour.isBlocked)
+                            {
+                                Debug.Log("Gidiyorum RIGHT" + randomXPathWayCount);
+                                selectedTile = selectedTile.rightNeighbour;
+                                selectedTile.isBlocked = false;
+                            }
+                            else
+                            {
+                                selectedTile = firstSelectedTile;
+                                _pathCreateType = FirstPathCreateBehaviour(oldPathType);
+                                break;
 
+                            }
+
+                        }
+                        Debug.Log("KEYTILE RIGHT");
 
                     }
                     if (selectedTile.rightNeighbour.isBlocked)
                     {
                         selectedTile.rightNeighbour.isKeyTile = true;
                     }
-                    if (selectedTile.upNeighbour.posOnZ >= gridHeight - 2)
-                    {
-                        _pathCreateType = Enums.MoveablePathCreateType.Down;
-                    }
-                    else
-                    {
-                        _pathCreateType = Enums.MoveablePathCreateType.Up;
-                    }
-                    //_pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
+
+                    _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
+                    oldPathType = _pathCreateType;
+                    // Debug.Log("0 RIGHT");
 
 
-                    break;
-                case Enums.MoveablePathCreateType.Base:
+
+
                     break;
                 default:
+                    Debug.Log("DEFAULT");
                     break;
             }
-        }*/
-    }
 
+        }
+
+
+
+
+        #region garbage
+        /* for (int i = 0; i < 200; i++)
+         {
+             int multiplier = Random.Range(1, 10);
+
+
+
+
+
+             for (int j = 0; j < multiplier; j++)
+             {
+                 if (_pathCreateType == Enums.MoveablePathCreateType.Up && selectedTile.upNeighbour != null && selectedTile.upNeighbour.isBlocked && selectedTile.upNeighbour.posOnZ < (gridHeight - 1) * 10
+                     && selectedTile.upNeighbour.posOnZ > 10 )
+                 {
+                     if (!selectedTile.isKeyTile)
+                     {
+
+                         List<Tile> keyHolder = new List<Tile>();
+                         Debug.Log("Switch up");
+                         selectedTile.downNeighbour.isKeyTile = true;
+                         selectedTile.isBlocked = false;
+                         selectedTile.upNeighbour.isBlocked = false;
+                         selectedTile = selectedTile.upNeighbour;
+                         unblockedTiles.Add(selectedTile);
+                         keyHolder.Add(selectedTile);
+                         keyHolder.Add(selectedTile.upNeighbour);
+                         _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
+                     }
+
+                     if (j == multiplier-1&&!selectedTile.upNeighbour.isKeyTile)
+                     {
+                         selectedTile.upNeighbour.isKeyTile = true;
+                         keyTiles.Add(selectedTile.upNeighbour);
+
+                     }
+
+
+
+
+
+                 }
+
+
+             }
+
+             Debug.Log("Switch down");
+             for (int j = 0; j < multiplier; j++)
+             {
+                 if (_pathCreateType == Enums.MoveablePathCreateType.Down && selectedTile.downNeighbour != null && selectedTile.downNeighbour.isBlocked && selectedTile.downNeighbour.posOnZ > 10
+                     && selectedTile.downNeighbour.posOnZ < (gridHeight - 1) * 10 )
+                 {
+                     if (!selectedTile.isKeyTile)
+                     {
+                         List<Tile> keyHolder = new List<Tile>();
+                         Debug.Log("Switch up");
+                         selectedTile.upNeighbour.isKeyTile = true;
+                         selectedTile.isBlocked = false;
+                         selectedTile.downNeighbour.isBlocked = false;
+                         selectedTile = selectedTile.downNeighbour;
+                         unblockedTiles.Add(selectedTile);
+                         keyHolder.Add(selectedTile);
+                         keyHolder.Add(selectedTile.downNeighbour);
+                         _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
+
+                     }
+                     if (j == multiplier-1&&!selectedTile.downNeighbour.isKeyTile)
+                     {
+                         selectedTile.downNeighbour.isKeyTile = true;
+                         keyTiles.Add(selectedTile.downNeighbour);
+                     }
+
+
+
+
+
+                 }
+
+             }
+
+             Debug.Log("Switch left");
+             for (int j = 0; j < multiplier; j++)
+             {
+                 if (_pathCreateType == Enums.MoveablePathCreateType.Left && selectedTile.leftNeighbour != null && selectedTile.leftNeighbour.isBlocked && selectedTile.leftNeighbour.posOnX > 10
+                     && selectedTile.leftNeighbour.posOnX < (gridWidth - 1) * 10 )
+                 {
+                     if (!selectedTile.isKeyTile)
+                     {
+                         List<Tile> keyHolder = new List<Tile>();
+                         Debug.Log("Switch up");
+                         selectedTile.rightNeighbour.isKeyTile = true;
+                         selectedTile.isBlocked = false;
+                         selectedTile.leftNeighbour.isBlocked = false;
+                         selectedTile = selectedTile.leftNeighbour;
+                         unblockedTiles.Add(selectedTile);
+                         keyHolder.Add(selectedTile);
+                         keyHolder.Add(selectedTile.leftNeighbour);
+                         _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
+
+                     }
+
+                     if (j == multiplier-1&&!selectedTile.leftNeighbour.isKeyTile)
+                     {
+                         selectedTile.leftNeighbour.isKeyTile = true;
+                         keyTiles.Add(selectedTile.leftNeighbour);
+                     }
+
+
+
+
+                 }
+
+
+             }
+
+             Debug.Log("Switch right");
+             for (int j = 0; j < multiplier; j++)
+             {
+                 if (_pathCreateType == Enums.MoveablePathCreateType.Right && selectedTile.rightNeighbour != null && selectedTile.rightNeighbour.isBlocked && selectedTile.rightNeighbour.posOnX < (gridWidth - 1) * 10
+                     && selectedTile.posOnX > 10)
+                 {
+                     if (!selectedTile.isKeyTile)
+                     {
+                         List<Tile> keyHolder = new List<Tile>();
+                          Debug.Log("Switch up");
+                         selectedTile.leftNeighbour.isKeyTile = true;
+                         selectedTile.isBlocked = false;
+                         selectedTile.rightNeighbour.isBlocked = false;
+                         selectedTile = selectedTile.rightNeighbour;
+                         unblockedTiles.Add(selectedTile);
+                         keyHolder.Add(selectedTile);
+                         keyHolder.Add(selectedTile.rightNeighbour);
+                         _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
+
+
+                     }
+
+                     if (j == multiplier-1&&!selectedTile.rightNeighbour.isKeyTile)
+                     {
+                         selectedTile.rightNeighbour.isKeyTile = true;
+                         keyTiles.Add(selectedTile.rightNeighbour);
+
+                     }
+
+
+
+                 }
+
+             }
+
+         }*/
+        #endregion
+
+
+
+
+    }
 
     private int FindRandomDir(Tile selectedTile, Enums.MoveablePathCreateType dir)
     {
