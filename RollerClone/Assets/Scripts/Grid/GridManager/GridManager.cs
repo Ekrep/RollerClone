@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class GridManager : MonoBehaviour
 {
 
@@ -50,6 +51,7 @@ public class GridManager : MonoBehaviour
         //CreateMoveAblePath();
         //CreatePath();
         CreateRealPathThisTime();
+        CheckUnblockedTiles();
 
     }
 
@@ -85,26 +87,43 @@ public class GridManager : MonoBehaviour
         for (int i = 0; i < allTiles.Count; i++)
         {
             allTiles[i].isBlocked = true;
+            allTiles[i].cube.SetActive(true);
+            //allTiles[i].tileColor.material.color = Color.red;
         }
 
 
 
     }
 
+    private void CheckUnblockedTiles()
+    {
+
+        for (int i = 0; i < allTiles.Count; i++)
+        {
+            if (allTiles[i].isBlocked==false)
+            {
+                allTiles[i].cube.SetActive(false);
+                //allTiles[i].tileColor.material.color = Color.white;
+            }
+        }
+    }
+
+
     private void CreateRealPathThisTime()
     {
+       
         selectedTile = tileDictionary[new Vector2Int(Random.Range(1, gridWidth - 2), Random.Range(1, gridHeight - 2))];
         Debug.Log("/////////FIRST SELECTED TILE//////////" + selectedTile);
         GameManager.Instance.OnSendStartPosToBall(selectedTile);
         Tile firstSelectedTile = selectedTile;
-
+        
 
 
         _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 4);
 
         Enums.MoveablePathCreateType oldPathCreateType = _pathCreateType;
 
-
+        
 
         //gittiði yönün tersine gitmeme ekle
         int iterationCount = 100;
@@ -168,18 +187,20 @@ public class GridManager : MonoBehaviour
                                     {
                                         _pathCreateType = Enums.MoveablePathCreateType.Right;
                                     }
-                                    if (!selectedTile.leftNeighbour.isBlocked && !selectedTile.rightNeighbour.isBlocked)
+                                    /*if (!selectedTile.leftNeighbour.isBlocked && !selectedTile.rightNeighbour.isBlocked)
                                     {
-                                        Debug.Log("girdim while");
+                                        Debug.Log("-------------SEND FIRST TILE---------------");
+                                        
                                         selectedTile = firstSelectedTile;
                                         _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 4);
                                         while (_pathCreateType == oldPathCreateType)
                                         {
+                                            Debug.Log("girdim while");
                                             _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 4);
 
                                         }
 
-                                    }
+                                    }*/
                                     // _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
                                 }
 
@@ -197,7 +218,7 @@ public class GridManager : MonoBehaviour
                             {
                                 _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
                             }
-                            else
+                            else if(!selectedTile.upNeighbour.isKeyTile)
                             {
                                 _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
                             }
@@ -265,8 +286,9 @@ public class GridManager : MonoBehaviour
                                     {
                                         _pathCreateType = Enums.MoveablePathCreateType.Right;
                                     }
-                                    if (!selectedTile.leftNeighbour.isBlocked && !selectedTile.rightNeighbour.isBlocked)
+                                   /* if (!selectedTile.leftNeighbour.isBlocked && !selectedTile.rightNeighbour.isBlocked)
                                     {
+                                        Debug.Log("-------------SEND FIRST TILE---------------");
                                         selectedTile = firstSelectedTile;
                                         _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 4);
                                         while (_pathCreateType == oldPathCreateType)
@@ -276,8 +298,9 @@ public class GridManager : MonoBehaviour
 
                                         }
 
-                                    }
+                                    }*/
 
+                                   //that part brokes
                                     //_pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
                                 }
 
@@ -295,7 +318,7 @@ public class GridManager : MonoBehaviour
                             {
                                 _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
                             }
-                            else
+                            else if(!selectedTile.downNeighbour.isKeyTile)
                             {
                                 _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
                             }
@@ -362,8 +385,9 @@ public class GridManager : MonoBehaviour
                                     {
                                         _pathCreateType = Enums.MoveablePathCreateType.Down;
                                     }
-                                    if (!selectedTile.upNeighbour.isBlocked && !selectedTile.downNeighbour.isBlocked)
+                                    /*if (!selectedTile.upNeighbour.isBlocked && !selectedTile.downNeighbour.isBlocked)
                                     {
+                                        Debug.Log("-------------SEND FIRST TILE---------------");
                                         selectedTile = firstSelectedTile;
                                         _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 4);
                                         while (_pathCreateType == oldPathCreateType)
@@ -373,7 +397,7 @@ public class GridManager : MonoBehaviour
 
                                         }
 
-                                    }
+                                    }*/
                                     //_pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
                                 }
 
@@ -391,7 +415,7 @@ public class GridManager : MonoBehaviour
                             {
                                 _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
                             }
-                            else
+                            else if(!selectedTile.leftNeighbour.isKeyTile)
                             {
                                 _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
                             }
@@ -462,8 +486,9 @@ public class GridManager : MonoBehaviour
                                     {
                                         _pathCreateType = Enums.MoveablePathCreateType.Down;
                                     }
-                                    if (!selectedTile.upNeighbour.isBlocked && !selectedTile.downNeighbour.isBlocked)
+                                    /*if (!selectedTile.upNeighbour.isBlocked && !selectedTile.downNeighbour.isBlocked)
                                     {
+                                        Debug.Log("-------------SEND FIRST TILE---------------");
                                         selectedTile = firstSelectedTile;
                                         _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 4);
                                         while (_pathCreateType == oldPathCreateType)
@@ -473,7 +498,7 @@ public class GridManager : MonoBehaviour
 
                                         }
 
-                                    }
+                                    }*/
                                     //_pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
                                 }
 
@@ -487,11 +512,11 @@ public class GridManager : MonoBehaviour
                         }
                         if (!isBreak)
                         {
-                            if (selectedTile.leftNeighbour.isBlocked)
+                            if (selectedTile.rightNeighbour.isBlocked)
                             {
                                 _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
                             }
-                            else
+                            else if(!selectedTile.rightNeighbour.isKeyTile)
                             {
                                 _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
                             }

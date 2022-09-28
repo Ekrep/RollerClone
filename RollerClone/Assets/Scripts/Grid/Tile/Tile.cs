@@ -44,7 +44,7 @@ public class Tile : MonoBehaviour
     }
     private void Update()
     {
-        if (tileColor.material.color != Color.red)
+        /*if (tileColor.material.color != Color.red)
         {
             if (isBlocked)
             {
@@ -61,14 +61,14 @@ public class Tile : MonoBehaviour
             tileColor.material.color = Color.black;
         }*/
 
-        if (isBlocked)
+        /*if (isBlocked)
         {
             cube.SetActive(true);
         }
         else
         {
             cube.SetActive(false);
-        }
+        }*/
     }
 
 

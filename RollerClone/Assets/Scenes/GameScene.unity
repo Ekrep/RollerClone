@@ -256,7 +256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0bfadda48c50484ab0a6b151792eba3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 100
+  movementSpeed: 200
   canMove: 0
   _currentTile: {fileID: 0}
   _pathWayCurrentIndex: 0
