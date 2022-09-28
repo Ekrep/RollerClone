@@ -61,14 +61,14 @@ public class Tile : MonoBehaviour
             tileColor.material.color = Color.black;
         }*/
 
-       /* if (isBlocked)
+        if (isBlocked)
         {
             cube.SetActive(true);
         }
         else
         {
             cube.SetActive(false);
-        }*/
+        }
     }
 
 
