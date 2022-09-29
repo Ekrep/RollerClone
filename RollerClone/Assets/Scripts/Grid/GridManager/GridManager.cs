@@ -126,7 +126,7 @@ public class GridManager : MonoBehaviour
         
 
         //gittiði yönün tersine gitmeme ekle
-        int iterationCount = 1000;
+        int iterationCount = 100;
         int pathWayIterationCount;
         for (int i = 0; i < iterationCount; i++)
         {
@@ -167,15 +167,14 @@ public class GridManager : MonoBehaviour
                             {
                                 isBreak = true;
                                 Debug.Log("UPBREAK");
-                                
+                                //holder.downNeighbour.isKeyTile = false;
                                 if (selectedTile.downNeighbour.isBlocked)
                                 {
                                     selectedTile.upNeighbour.isKeyTile = true;
                                 }
                                 if (selectedTile.upNeighbour.posOnZ == gridHeight - 1 && visitedTiles.Count < 2 && selectedTile.downNeighbour.isBlocked)
                                 {
-                                    holder.downNeighbour.isKeyTile = false;
-                                    // selectedTile.downNeighbour.isKeyTile = false;
+                                    selectedTile.downNeighbour.isKeyTile = false;
                                     _pathCreateType = Enums.MoveablePathCreateType.Down;
                                 }
                                 else
@@ -209,7 +208,7 @@ public class GridManager : MonoBehaviour
                             }
 
                         }
-                        if (selectedTile.upNeighbour.isBlocked&&!isBreak)
+                        if (selectedTile.upNeighbour.isBlocked)
                         {
                             selectedTile.upNeighbour.isKeyTile = true;
                         }
@@ -267,15 +266,14 @@ public class GridManager : MonoBehaviour
                             {
                                 isBreak = true;
                                 Debug.Log("DOWNBREAK");
-                                
+                                //holder.upNeighbour.isKeyTile = false;
                                 if (selectedTile.downNeighbour.isBlocked)
                                 {
                                     selectedTile.downNeighbour.isKeyTile = true;
                                 }
                                 if (selectedTile.downNeighbour.posOnZ == 0 && visitedTiles.Count < 2 && selectedTile.upNeighbour.isBlocked)
                                 {
-                                    holder.upNeighbour.isKeyTile = false;
-                                    //selectedTile.upNeighbour.isKeyTile = false;
+                                    selectedTile.upNeighbour.isKeyTile = false;
                                     _pathCreateType = Enums.MoveablePathCreateType.Up;
                                 }
                                 else
@@ -310,7 +308,7 @@ public class GridManager : MonoBehaviour
                             }
 
                         }
-                        if (selectedTile.downNeighbour.isBlocked&&!isBreak)
+                        if (selectedTile.downNeighbour.isBlocked)
                         {
                             selectedTile.downNeighbour.isKeyTile = true;
                         }
@@ -367,15 +365,14 @@ public class GridManager : MonoBehaviour
                             {
                                 isBreak = true;
                                 Debug.Log("LEFTBREAK");
-                                
+                                //holder.rightNeighbour.isKeyTile = false;
                                 if (selectedTile.leftNeighbour.isBlocked)
                                 {
                                     selectedTile.leftNeighbour.isKeyTile = true;
                                 }
                                 if (selectedTile.leftNeighbour.posOnX == 0 && visitedTiles.Count < 2 && selectedTile.rightNeighbour.isBlocked)
                                 {
-                                    holder.rightNeighbour.isKeyTile = false;
-                                    //selectedTile.rightNeighbour.isKeyTile = false;
+                                    selectedTile.rightNeighbour.isKeyTile = false;
                                     _pathCreateType = Enums.MoveablePathCreateType.Right;
                                 }
                                 else
@@ -408,7 +405,7 @@ public class GridManager : MonoBehaviour
                             }
 
                         }
-                        if (selectedTile.leftNeighbour.isBlocked&&!isBreak)
+                        if (selectedTile.leftNeighbour.isBlocked)
                         {
                             selectedTile.leftNeighbour.isKeyTile = true;
                         }
@@ -468,15 +465,15 @@ public class GridManager : MonoBehaviour
                             {
                                 isBreak = true;
                                 Debug.Log("RIGHTBREAK");
-                                
+                                //holder.leftNeighbour.isKeyTile = false;
                                 if (selectedTile.rightNeighbour.isBlocked)
                                 {
                                     selectedTile.rightNeighbour.isKeyTile = true;
                                 }
                                 if (selectedTile.rightNeighbour.posOnX == gridWidth - 1 && visitedTiles.Count < 2 && selectedTile.leftNeighbour.isBlocked)
                                 {
-                                    holder.leftNeighbour.isKeyTile = false;
-                                    //selectedTile.leftNeighbour.isKeyTile = false;
+
+                                    selectedTile.leftNeighbour.isKeyTile = false;
                                     _pathCreateType = Enums.MoveablePathCreateType.Left;
                                 }
                                 else
@@ -489,7 +486,7 @@ public class GridManager : MonoBehaviour
                                     {
                                         _pathCreateType = Enums.MoveablePathCreateType.Down;
                                     }
-                                   /* if (!selectedTile.upNeighbour.isBlocked && !selectedTile.downNeighbour.isBlocked)
+                                    /*if (!selectedTile.upNeighbour.isBlocked && !selectedTile.downNeighbour.isBlocked)
                                     {
                                         Debug.Log("-------------SEND FIRST TILE---------------");
                                         selectedTile = firstSelectedTile;
@@ -509,7 +506,7 @@ public class GridManager : MonoBehaviour
 
                             }
                         }
-                        if (selectedTile.rightNeighbour.isBlocked&&!isBreak)
+                        if (selectedTile.rightNeighbour.isBlocked)
                         {
                             selectedTile.rightNeighbour.isKeyTile = true;
                         }
