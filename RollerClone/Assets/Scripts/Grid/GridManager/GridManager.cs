@@ -126,14 +126,18 @@ public class GridManager : MonoBehaviour
         
 
         //gittiði yönün tersine gitmeme ekle
+<<<<<<< HEAD
         int iterationCount = 100;
+=======
+        int iterationCount = 20;
+>>>>>>> parent of be841ee (LevelGenerator Complated)
         int pathWayIterationCount;
         for (int i = 0; i < iterationCount; i++)
         {
             switch (_pathCreateType)
             {
                 case Enums.MoveablePathCreateType.Up:
-                    Debug.Log("----------TRY'N UP--------------");
+
                     if (!selectedTile.upNeighbour.isKeyTile)
                     {
                         List<Tile> visitedTiles = new List<Tile>();
@@ -157,9 +161,24 @@ public class GridManager : MonoBehaviour
                                 selectedTile = selectedTile.upNeighbour;
                                 selectedTile.isBlocked = false;
                                 visitedTiles.Add(selectedTile);
+<<<<<<< HEAD
 
 
 
+=======
+                                if (j==pathWayIterationCount-1)
+                                {
+                                    if (!visitedTiles[visitedTiles.Count-1].upNeighbour.isBlocked)
+                                    {
+                                        for (int k = 0; k < visitedTiles.Count; k++)
+                                        {
+                                            visitedTiles[k].isBlocked = true;
+                                        }
+
+                                    }
+                                    
+                                }
+>>>>>>> parent of be841ee (LevelGenerator Complated)
 
 
                             }
@@ -214,6 +233,7 @@ public class GridManager : MonoBehaviour
                         }
                         if (!isBreak)
                         {
+<<<<<<< HEAD
                             if (selectedTile.upNeighbour.isBlocked)
                             {
                                 _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
@@ -223,6 +243,9 @@ public class GridManager : MonoBehaviour
                                 _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
                             }
 
+=======
+                            _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
+>>>>>>> parent of be841ee (LevelGenerator Complated)
                         }
 
                     }
@@ -234,7 +257,7 @@ public class GridManager : MonoBehaviour
 
                     break;
                 case Enums.MoveablePathCreateType.Down:
-                    Debug.Log("----------TRY'N DOWN--------------");
+
                     if (!selectedTile.downNeighbour.isKeyTile)
                     {
                         List<Tile> visitedTiles = new List<Tile>();
@@ -253,6 +276,7 @@ public class GridManager : MonoBehaviour
                         {
                             if (!selectedTile.downNeighbour.isKeyTile && selectedTile.downNeighbour.posOnZ >= 1)
                             {
+<<<<<<< HEAD
                                 selectedTile = selectedTile.downNeighbour;
                                 selectedTile.isBlocked = false;
                                 visitedTiles.Add(selectedTile);
@@ -260,6 +284,13 @@ public class GridManager : MonoBehaviour
 
 
 
+=======
+
+                                selectedTile = selectedTile.downNeighbour;
+                                selectedTile.isBlocked = false;
+                                visitedTiles.Add(selectedTile);
+                               
+>>>>>>> parent of be841ee (LevelGenerator Complated)
 
                             }
                             else
@@ -314,6 +345,7 @@ public class GridManager : MonoBehaviour
                         }
                         if (!isBreak)
                         {
+<<<<<<< HEAD
                             if (selectedTile.downNeighbour.isBlocked)
                             {
                                 _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
@@ -322,6 +354,9 @@ public class GridManager : MonoBehaviour
                             {
                                 _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
                             }
+=======
+                            _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
+>>>>>>> parent of be841ee (LevelGenerator Complated)
                         }
 
                     }
@@ -333,7 +368,6 @@ public class GridManager : MonoBehaviour
 
                     break;
                 case Enums.MoveablePathCreateType.Left:
-                    Debug.Log("----------TRY'N LEFT--------------");
                     if (!selectedTile.leftNeighbour.isKeyTile)
                     {
                         List<Tile> visitedTiles = new List<Tile>();
@@ -352,12 +386,20 @@ public class GridManager : MonoBehaviour
                         {
                             if (!selectedTile.leftNeighbour.isKeyTile && selectedTile.leftNeighbour.posOnX >= 1)
                             {
+<<<<<<< HEAD
                                 selectedTile = selectedTile.leftNeighbour;
                                 selectedTile.isBlocked = false;
                                 visitedTiles.Add(selectedTile);
 
 
 
+=======
+
+                                selectedTile = selectedTile.leftNeighbour;
+                                selectedTile.isBlocked = false;
+                                visitedTiles.Add(selectedTile);
+                               
+>>>>>>> parent of be841ee (LevelGenerator Complated)
 
 
                             }
@@ -411,6 +453,7 @@ public class GridManager : MonoBehaviour
                         }
                         if (!isBreak)
                         {
+<<<<<<< HEAD
                             if (selectedTile.leftNeighbour.isBlocked)
                             {
                                 _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
@@ -420,6 +463,9 @@ public class GridManager : MonoBehaviour
                                 _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
                             }
 
+=======
+                            _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
+>>>>>>> parent of be841ee (LevelGenerator Complated)
                         }
 
 
@@ -432,7 +478,6 @@ public class GridManager : MonoBehaviour
 
                     break;
                 case Enums.MoveablePathCreateType.Right:
-                    Debug.Log("----------TRY'N RIGHT--------------");
                     if (!selectedTile.rightNeighbour.isKeyTile)
                     {
                         List<Tile> visitedTiles = new List<Tile>();
@@ -455,9 +500,13 @@ public class GridManager : MonoBehaviour
                                 selectedTile = selectedTile.rightNeighbour;
                                 selectedTile.isBlocked = false;
                                 visitedTiles.Add(selectedTile);
+<<<<<<< HEAD
 
 
 
+=======
+                               
+>>>>>>> parent of be841ee (LevelGenerator Complated)
 
 
                             }
@@ -512,6 +561,7 @@ public class GridManager : MonoBehaviour
                         }
                         if (!isBreak)
                         {
+<<<<<<< HEAD
                             if (selectedTile.rightNeighbour.isBlocked)
                             {
                                 _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
@@ -520,6 +570,9 @@ public class GridManager : MonoBehaviour
                             {
                                 _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(2, 4);
                             }
+=======
+                            _pathCreateType = (Enums.MoveablePathCreateType)Random.Range(0, 2);
+>>>>>>> parent of be841ee (LevelGenerator Complated)
                         }
 
                     }
