@@ -127,7 +127,7 @@ public class GridManager : MonoBehaviour
 
 
         //gittiði yönün tersine gitmeme ekle
-        int iterationCount = 10;
+        int iterationCount = 100;
         int pathWayIterationCount;
         for (int i = 0; i < iterationCount; i++)
         {
@@ -136,7 +136,7 @@ public class GridManager : MonoBehaviour
                 case Enums.MoveablePathCreateType.Up:
                     Debug.Log("----------TRY'N UP--------------");
 
-                    if (!selectedTile.upNeighbour.isKeyTile &&selectedTile.upNeighbour.isBlocked &&oldPathCreateType != Enums.MoveablePathCreateType.Down)
+                    if (!selectedTile.upNeighbour.isKeyTile  &&oldPathCreateType != Enums.MoveablePathCreateType.Down)
                     {
 
                         List<Tile> visitedTiles = new List<Tile>();
@@ -158,14 +158,23 @@ public class GridManager : MonoBehaviour
                         Debug.Log("Up" + " " + pathWayIterationCount);
                         for (int j = 0; j < pathWayIterationCount; j++)
                         {
-                            if (!selectedTile.upNeighbour.isKeyTile && selectedTile.upNeighbour.posOnZ != gridHeight - 1 && !unblockedTiles.Contains(selectedTile))
+                            if (!selectedTile.upNeighbour.isKeyTile && selectedTile.upNeighbour.posOnZ != gridHeight - 1 )
                             {
 
-
+                                Debug.Log("Up" + " " + "gittim" + (j+1));
                                 selectedTile = selectedTile.upNeighbour;
                                 selectedTile.isBlocked = false;
                                 visitedTiles.Add(selectedTile);
-                                unblockedTiles.Add(selectedTile.downNeighbour);
+                                if (selectedTile.upNeighbour.isBlocked==false)
+                                {
+                                    while (!selectedTile.upNeighbour.isBlocked)
+                                    {
+                                        selectedTile = selectedTile.upNeighbour;
+                                        selectedTile.isBlocked = false;
+                                    }
+                                }
+
+                                
 
 
 
@@ -252,7 +261,7 @@ public class GridManager : MonoBehaviour
                 case Enums.MoveablePathCreateType.Down:
                     Debug.Log("----------TRY'N DOWN--------------");
 
-                    if (!selectedTile.downNeighbour.isKeyTile && selectedTile.downNeighbour.isBlocked&&oldPathCreateType != Enums.MoveablePathCreateType.Up)
+                    if (!selectedTile.downNeighbour.isKeyTile &&oldPathCreateType != Enums.MoveablePathCreateType.Up)
                     {
 
                         List<Tile> visitedTiles = new List<Tile>();
@@ -274,12 +283,21 @@ public class GridManager : MonoBehaviour
                         Debug.Log("Down" + " " + pathWayIterationCount);
                         for (int j = 0; j < pathWayIterationCount; j++)
                         {
-                            if (!selectedTile.downNeighbour.isKeyTile && selectedTile.downNeighbour.posOnZ >= 1 && !unblockedTiles.Contains(selectedTile))
+                            if (!selectedTile.downNeighbour.isKeyTile && selectedTile.downNeighbour.posOnZ >= 1 )
                             {
+                                Debug.Log("Down" + " " + "gittim" + (j+1));
                                 selectedTile = selectedTile.downNeighbour;
                                 selectedTile.isBlocked = false;
                                 visitedTiles.Add(selectedTile);
-                                unblockedTiles.Add(selectedTile.upNeighbour);
+                                if (selectedTile.downNeighbour.isBlocked == false)
+                                {
+                                    while (!selectedTile.downNeighbour.isBlocked)
+                                    {
+                                        selectedTile = selectedTile.downNeighbour;
+                                        selectedTile.isBlocked = false;
+                                    }
+                                }
+
 
 
 
@@ -313,7 +331,7 @@ public class GridManager : MonoBehaviour
                                         _pathCreateType = Enums.MoveablePathCreateType.Right;
 
                                     }
-                                    /* if (!selectedTile.leftNeighbour.isBlocked && !selectedTile.rightNeighbour.isBlocked)
+                                     /*if (!selectedTile.leftNeighbour.isBlocked && !selectedTile.rightNeighbour.isBlocked)
                                      {
                                          Debug.Log("-------------SEND FIRST TILE---------------");
                                          selectedTile = firstSelectedTile;
@@ -359,26 +377,14 @@ public class GridManager : MonoBehaviour
                         _pathCreateType = Enums.MoveablePathCreateType.Right;
 
                     }
-                    int downblockedCount = 0;
-                    for (int k = 0; k < selectedTile.neighbourTiles.Count; k++)
-                    {
-                        if (selectedTile.neighbourTiles[k].isBlocked)
-                        {
-                            downblockedCount++;
-                        }
-
-                    }
-                    if (downblockedCount == 3)
-                    {
-                        selectedTile.isBlocked = true;
-                    }
+                 
 
 
                     break;
                 case Enums.MoveablePathCreateType.Left:
                     Debug.Log("----------TRY'N LEFT--------------");
 
-                    if (!selectedTile.leftNeighbour.isKeyTile &&selectedTile.leftNeighbour.isBlocked &&oldPathCreateType != Enums.MoveablePathCreateType.Right)
+                    if (!selectedTile.leftNeighbour.isKeyTile &&oldPathCreateType != Enums.MoveablePathCreateType.Right)
                     {
                         List<Tile> visitedTiles = new List<Tile>();
                         Tile holder;
@@ -400,12 +406,21 @@ public class GridManager : MonoBehaviour
                         Debug.Log("Left" + " " + pathWayIterationCount);
                         for (int j = 0; j < pathWayIterationCount; j++)
                         {
-                            if (!selectedTile.leftNeighbour.isKeyTile && selectedTile.leftNeighbour.posOnX >= 1 && !unblockedTiles.Contains(selectedTile))
+                            if (!selectedTile.leftNeighbour.isKeyTile && selectedTile.leftNeighbour.posOnX >= 1 )
                             {
+                                Debug.Log("Left" + " " + "gittim" + (j+1));
                                 selectedTile = selectedTile.leftNeighbour;
                                 selectedTile.isBlocked = false;
                                 visitedTiles.Add(selectedTile);
-                                unblockedTiles.Add(selectedTile.rightNeighbour);
+                                if (selectedTile.leftNeighbour.isBlocked == false)
+                                {
+                                    while (!selectedTile.leftNeighbour.isBlocked)
+                                    {
+                                        selectedTile = selectedTile.leftNeighbour;
+                                        selectedTile.isBlocked = false;
+                                    }
+                                }
+
 
 
 
@@ -432,6 +447,7 @@ public class GridManager : MonoBehaviour
                                     if (selectedTile.upNeighbour.isBlocked && !selectedTile.upNeighbour.isKeyTile)
                                     {
                                         _pathCreateType = Enums.MoveablePathCreateType.Up;
+
 
                                     }
                                     else if (!selectedTile.upNeighbour.isKeyTile)
@@ -492,7 +508,7 @@ public class GridManager : MonoBehaviour
                 case Enums.MoveablePathCreateType.Right:
                     Debug.Log("----------TRY'N RIGHT--------------");
 
-                    if (!selectedTile.rightNeighbour.isKeyTile && selectedTile.rightNeighbour.isBlocked && oldPathCreateType != Enums.MoveablePathCreateType.Left)
+                    if (!selectedTile.rightNeighbour.isKeyTile  && oldPathCreateType != Enums.MoveablePathCreateType.Left)
                     {
 
                         List<Tile> visitedTiles = new List<Tile>();
@@ -514,13 +530,21 @@ public class GridManager : MonoBehaviour
                         Debug.Log("Right" + " " + pathWayIterationCount);
                         for (int j = 0; j < pathWayIterationCount; j++)
                         {
-                            if (!selectedTile.rightNeighbour.isKeyTile && selectedTile.rightNeighbour.posOnX != gridWidth - 1 && !unblockedTiles.Contains(selectedTile))
+                            if (!selectedTile.rightNeighbour.isKeyTile && selectedTile.rightNeighbour.posOnX != gridWidth - 1 )
                             {
-
+                                Debug.Log("Right" + " " +"gittim"+ (j+1));
                                 selectedTile = selectedTile.rightNeighbour;
                                 selectedTile.isBlocked = false;
                                 visitedTiles.Add(selectedTile);
-                                unblockedTiles.Add(selectedTile.leftNeighbour);
+                                if (selectedTile.rightNeighbour.isBlocked == false)
+                                {
+                                    while (!selectedTile.rightNeighbour.isBlocked)
+                                    {
+                                        selectedTile = selectedTile.rightNeighbour;
+                                        selectedTile.isBlocked = false;
+                                    }
+                                }
+
 
 
 
