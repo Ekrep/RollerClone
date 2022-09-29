@@ -293,8 +293,8 @@ MonoBehaviour:
   _tilePrefab: {fileID: 8089591442725337387, guid: 5c8f4ffef0544a8428ad378ed2a7df55,
     type: 3}
   _obstaclePrefab: {fileID: 0}
-  gridHeight: 20
-  gridWidth: 8
+  gridHeight: 16
+  gridWidth: 16
   _tileParent: {fileID: 1497463679}
   unblockedTiles: []
   allTiles: []

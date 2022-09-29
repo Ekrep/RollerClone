@@ -24,7 +24,10 @@ public class Tile : MonoBehaviour
     private void OnEnable()
     {
         GameManager.Tiled += GameManager_Tiled;
+        
     }
+
+    
 
     private void GameManager_Tiled()
     {
