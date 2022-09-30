@@ -191,7 +191,7 @@ public class GridManager : MonoBehaviour
                                 {
                                     selectedTile.upNeighbour.isKeyTile = true;
                                 }
-                                if (selectedTile.upNeighbour.posOnZ == gridHeight - 1 && visitedTiles.Count < 2 && selectedTile.downNeighbour.isBlocked)
+                                if ( visitedTiles.Count < 2 && selectedTile.downNeighbour.isBlocked)
                                 {
                                     if (selectedTile.downNeighbour.leftNeighbour.isBlocked || selectedTile.downNeighbour.rightNeighbour.isBlocked)
                                     {
@@ -333,7 +333,7 @@ public class GridManager : MonoBehaviour
                                 {
                                     selectedTile.downNeighbour.isKeyTile = true;
                                 }
-                                if (selectedTile.downNeighbour.posOnZ == 0 && visitedTiles.Count < 2 && selectedTile.upNeighbour.isBlocked)
+                                if ( visitedTiles.Count < 2 && selectedTile.upNeighbour.isBlocked)
                                 {
                                     if (selectedTile.upNeighbour.leftNeighbour.isBlocked || selectedTile.upNeighbour.rightNeighbour.isBlocked)
                                     {
@@ -353,6 +353,8 @@ public class GridManager : MonoBehaviour
                                         selectedTile.upNeighbour.isKeyTile = false;
 
                                     }
+
+
                                     _pathCreateType = Enums.MoveablePathCreateType.Up;
 
                                 }
@@ -474,7 +476,7 @@ public class GridManager : MonoBehaviour
                                 {
                                     selectedTile.leftNeighbour.isKeyTile = true;
                                 }
-                                if (selectedTile.leftNeighbour.posOnX == 0 && visitedTiles.Count < 2 && selectedTile.rightNeighbour.isBlocked)
+                                if ( visitedTiles.Count < 2 && selectedTile.rightNeighbour.isBlocked)
                                 {
                                     if (selectedTile.rightNeighbour.downNeighbour.isBlocked || selectedTile.rightNeighbour.upNeighbour.isBlocked)
                                     {
@@ -616,7 +618,7 @@ public class GridManager : MonoBehaviour
                                 {
                                     selectedTile.rightNeighbour.isKeyTile = true;
                                 }
-                                if (selectedTile.rightNeighbour.posOnX == gridWidth - 1 && visitedTiles.Count < 2 && selectedTile.leftNeighbour.isBlocked)
+                                if ( visitedTiles.Count < 2 && selectedTile.leftNeighbour.isBlocked)
                                 {
 
                                     if (selectedTile.leftNeighbour.downNeighbour.isBlocked || selectedTile.leftNeighbour.upNeighbour.isBlocked)
