@@ -256,8 +256,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0bfadda48c50484ab0a6b151792eba3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.0019378662
+      value: 0.5070801
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.46235523
+      value: 0.99405223
+      inSlope: 0.7379407
+      outSlope: 0.7379407
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0019531
+      value: 0.74772644
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   movementSpeed: 200
-  canMove: 0
   _currentTile: {fileID: 0}
   _pathWayCurrentIndex: 0
 --- !u!1 &659362017
@@ -298,7 +330,6 @@ MonoBehaviour:
   _tileParent: {fileID: 1497463679}
   unblockedTiles: []
   allTiles: []
-  selectedTile: {fileID: 0}
   keyTiles: []
 --- !u!4 &659362019
 Transform:

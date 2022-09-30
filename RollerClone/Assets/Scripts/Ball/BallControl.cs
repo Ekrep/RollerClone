@@ -4,18 +4,27 @@ using UnityEngine;
 
 public class BallControl : MonoBehaviour
 {
-   
+
+
+    public AnimationCurve curve;
+
     private Enums.BallState _state;
     private Enums.BallMovementBehaviour _movementBehaviour;
     public float movementSpeed;
-    [HideInInspector] public bool canMove;
+    private bool _canMove;
 
     [SerializeField] private Tile _currentTile;
 
 
-    private List<Tile> _ballTargetPath;
-
     [SerializeField]private int _pathWayCurrentIndex = 0;
+
+    private int _requiredTilesToDye;
+
+    private int _coloredTileCount;
+
+    private float _ballJumpSpeed;
+
+    private float _timeScaleForJump=0f;
 
 
     private Vector2 _mouseFirstPos;
@@ -27,11 +36,25 @@ public class BallControl : MonoBehaviour
         GameManager.Tiled += GameManager_Tiled;
         GameManager.SendPathToBall += GameManager_SendPathToBall;
         GameManager.SendStartPosToBall += GameManager_SendStartPosToBall;
+        GameManager.SendRequiredTilesToDye += GameManager_SendRequiredTilesToDye;
+        GameManager.GameWin += GameManager_GameWin;
+    }
+
+    private void GameManager_GameWin()
+    {
+        _canMove = false;
+        CallBallJump();
+        
+    }
+
+    private void GameManager_SendRequiredTilesToDye(int requiredTilesToDye)
+    {
+        _requiredTilesToDye = requiredTilesToDye;
     }
 
     private void GameManager_SendStartPosToBall(Tile startTile)
     {
-        gameObject.transform.position = new Vector3(startTile.transform.position.x, 0.5f, startTile.transform.position.z);
+        gameObject.transform.position = new Vector3(startTile.transform.position.x, 1f, startTile.transform.position.z);
         _currentTile = startTile;
     }
 
@@ -39,7 +62,7 @@ public class BallControl : MonoBehaviour
     {
         StartCoroutine(MoveBallToTarget(tilePath));
         _currentTile = tilePath[tilePath.Count - 1];
-        _ballTargetPath = tilePath;
+        
     }
 
     private void GameManager_Tiled()
@@ -52,8 +75,13 @@ public class BallControl : MonoBehaviour
         GameManager.Tiled -= GameManager_Tiled;
         GameManager.SendPathToBall -= GameManager_SendPathToBall;
         GameManager.SendStartPosToBall -= GameManager_SendStartPosToBall;
+        GameManager.SendRequiredTilesToDye -= GameManager_SendRequiredTilesToDye;
+        GameManager.GameWin -= GameManager_GameWin;
     }
-
+    private void Start()
+    {
+        _canMove = true;
+    }
 
     private void Update()
     {
@@ -67,57 +95,62 @@ public class BallControl : MonoBehaviour
 
     private void MoveBall()
     {
-        if (_state != Enums.BallState.Moving)
+        if (_canMove)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (_state != Enums.BallState.Moving)
             {
-                _mouseFirstPos = Input.mousePosition;
-            }
-            if (Input.GetMouseButton(0))
-            {
-                _mouseCurrentPos = Input.mousePosition;
-                _mouseDeltaPos = CalculateDeltaPosition(_mouseFirstPos, _mouseCurrentPos);
-
-                float deltaX = _mouseDeltaPos.x;
-                float deltaY = _mouseDeltaPos.y;
-
-                if (Mathf.Abs(deltaX) > Mathf.Abs(deltaY) && _mouseDeltaPos != Vector2.zero)
+                if (Input.GetMouseButtonDown(0))
                 {
-                    if (deltaX > 0)
-                    {
-                        _movementBehaviour = Enums.BallMovementBehaviour.SwipedRight;
-                    }
-                    else
-                    {
-                        _movementBehaviour = Enums.BallMovementBehaviour.SwipedLeft;
-                    }
+                    _mouseFirstPos = Input.mousePosition;
                 }
-                else if (_mouseDeltaPos != Vector2.zero)
+                if (Input.GetMouseButton(0))
                 {
-                    if (deltaY > 0)
+                    _mouseCurrentPos = Input.mousePosition;
+                    _mouseDeltaPos = CalculateDeltaPosition(_mouseFirstPos, _mouseCurrentPos);
+
+                    float deltaX = _mouseDeltaPos.x;
+                    float deltaY = _mouseDeltaPos.y;
+
+                    if (Mathf.Abs(deltaX) > Mathf.Abs(deltaY) && _mouseDeltaPos != Vector2.zero)
                     {
-                        _movementBehaviour = Enums.BallMovementBehaviour.SwipedUp;
+                        if (deltaX > 0)
+                        {
+                            _movementBehaviour = Enums.BallMovementBehaviour.SwipedRight;
+                        }
+                        else
+                        {
+                            _movementBehaviour = Enums.BallMovementBehaviour.SwipedLeft;
+                        }
                     }
-                    else
+                    else if (_mouseDeltaPos != Vector2.zero)
                     {
-                        _movementBehaviour = Enums.BallMovementBehaviour.SwipedDown;
+                        if (deltaY > 0)
+                        {
+                            _movementBehaviour = Enums.BallMovementBehaviour.SwipedUp;
+                        }
+                        else
+                        {
+                            _movementBehaviour = Enums.BallMovementBehaviour.SwipedDown;
+                        }
                     }
+
+
                 }
-
-
-            }
-            if (Input.GetMouseButtonUp(0))
-            {
-                if (_mouseDeltaPos != Vector2.zero)
+                if (Input.GetMouseButtonUp(0))
                 {
-                    GameManager.Instance.OnSlide(_movementBehaviour, _currentTile);
-                    _mouseDeltaPos = Vector2.zero;
-                    _state = Enums.BallState.Moving;
-                    _movementBehaviour = Enums.BallMovementBehaviour.Idle;
-                }
+                    if (_mouseDeltaPos != Vector2.zero)
+                    {
+                        GameManager.Instance.OnSlide(_movementBehaviour, _currentTile);
+                        _mouseDeltaPos = Vector2.zero;
+                        _state = Enums.BallState.Moving;
+                        _movementBehaviour = Enums.BallMovementBehaviour.Idle;
+                    }
 
+                }
             }
+
         }
+        
 
 
 
@@ -138,31 +171,85 @@ public class BallControl : MonoBehaviour
     {
         
         yield return new WaitForFixedUpdate();
-        if (gameObject.transform.position != path[path.Count-1].transform.position)
+        if (_canMove)
         {
-
-            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, path[_pathWayCurrentIndex].transform.position, movementSpeed * Time.deltaTime);
-            StartCoroutine(MoveBallToTarget(path));
-            if (gameObject.transform.position==path[_pathWayCurrentIndex].transform.position&&
-                _pathWayCurrentIndex<path.Count)
+            if (gameObject.transform.position != new Vector3(path[path.Count - 1].transform.position.x, 1, path[path.Count - 1].transform.position.z))
             {
-                
-                path[_pathWayCurrentIndex].tileColor.material.color = Color.blue;
-                _pathWayCurrentIndex++;
+                Debug.Log("movecoroutine");
+                gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, new Vector3(path[_pathWayCurrentIndex].transform.position.x, 1, path[_pathWayCurrentIndex].transform.position.z), movementSpeed * Time.deltaTime);
+                StartCoroutine(MoveBallToTarget(path));
+                if (gameObject.transform.position == new Vector3(path[_pathWayCurrentIndex].transform.position.x, 1, path[_pathWayCurrentIndex].transform.position.z) &&
+                    _pathWayCurrentIndex < path.Count)
+                {
+                    if (path[_pathWayCurrentIndex].tileColor.material.color != Color.blue)
+                    {
+                        path[_pathWayCurrentIndex].tileColor.material.color = Color.blue;
+                        _coloredTileCount++;
+
+                    }
+
+                    _pathWayCurrentIndex++;
+                }
             }
-        }
-        else
-        {
-            
-            
+            else
+            {
+
+
                 _state = Enums.BallState.Idle;
                 StopCoroutine(MoveBallToTarget(path));
                 _pathWayCurrentIndex = 0;
-            
+                if (_coloredTileCount == _requiredTilesToDye)
+                {
+                    GameManager.Instance.OnGameWin();
+                }
 
+
+            }
         }
+       
     }
 
+    private void CallBallJump()
+    {
+        StartCoroutine(BallJump());
+    }
+    IEnumerator BallJump()
+    {
+        yield return new WaitForFixedUpdate();
+        if (gameObject.transform.position.y<10f)
+        {
+            _ballJumpSpeed = curve.Evaluate(_timeScaleForJump);
+            _timeScaleForJump += Time.deltaTime/10f;
+            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, new Vector3(gameObject.transform.position.x, 10f, gameObject.transform.position.z), _ballJumpSpeed*100f * Time.deltaTime);
+            StartCoroutine(BallJump());
+        }
+        else
+        {
+            _timeScaleForJump = 0f;
+            StopCoroutine(BallJump());
+            StartCoroutine(ReplaceBall());
+        }
 
+    }
+
+    IEnumerator ReplaceBall()
+    {
+        yield return new WaitForFixedUpdate();
+
+        if (gameObject.transform.position.y>1f)
+        {
+           
+            _ballJumpSpeed = curve.Evaluate(_timeScaleForJump);
+            _timeScaleForJump += Time.deltaTime/10f;
+            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, new Vector3(gameObject.transform.position.x, 1f, gameObject.transform.position.z),_ballJumpSpeed*100f*Time.deltaTime);
+            StartCoroutine(ReplaceBall());
+        }
+        else
+        {
+            _timeScaleForJump = 0f;
+            StopCoroutine(ReplaceBall());
+        }
+
+    }
 
 }

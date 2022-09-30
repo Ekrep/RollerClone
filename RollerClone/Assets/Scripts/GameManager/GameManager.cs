@@ -23,7 +23,8 @@ public class GameManager : MonoBehaviour
     private void GameManager_GameWin()
     {
         currentLevelIndex++;
-        LevelControl();
+        Debug.Log("win");
+        //LevelControl();
     }
 
     private void OnDisable()
@@ -46,6 +47,8 @@ public class GameManager : MonoBehaviour
     public static event Action<List<Tile>> SendPathToBall;
 
     public static event Action<Tile> SendStartPosToBall;
+
+    public static event Action<int> SendRequiredTilesToDye;
 
 
 
@@ -109,6 +112,14 @@ public class GameManager : MonoBehaviour
         if (SendStartPosToBall!=null)
         {
             SendStartPosToBall(startTile);
+        }
+    }
+
+    public void OnSendRequiredTilesToDye(int unblockedTilesCount)
+    {
+        if (SendRequiredTilesToDye!=null)
+        {
+            SendRequiredTilesToDye(unblockedTilesCount);
         }
     }
 }
