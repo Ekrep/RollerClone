@@ -195,12 +195,17 @@ public class GridManager : MonoBehaviour
                                 {
                                     if (selectedTile.downNeighbour.leftNeighbour.isBlocked || selectedTile.downNeighbour.rightNeighbour.isBlocked)
                                     {
-                                        if (selectedTile.downNeighbour.leftNeighbour.isBlocked&&!selectedTile.downNeighbour.rightNeighbour.isBlocked)
+                                        if (selectedTile.downNeighbour.leftNeighbour.isBlocked && !selectedTile.downNeighbour.rightNeighbour.isBlocked)
                                         {
                                             selectedTile.downNeighbour.leftNeighbour.isKeyTile = true;
                                         }
                                         else
                                         {
+                                            selectedTile.downNeighbour.rightNeighbour.isKeyTile = true;
+                                        }
+                                        if (selectedTile.downNeighbour.leftNeighbour.isBlocked && selectedTile.downNeighbour.rightNeighbour.isBlocked)
+                                        {
+                                            selectedTile.downNeighbour.leftNeighbour.isKeyTile = true;
                                             selectedTile.downNeighbour.rightNeighbour.isKeyTile = true;
                                         }
                                         selectedTile.downNeighbour.isKeyTile = false;
@@ -340,6 +345,11 @@ public class GridManager : MonoBehaviour
                                         {
                                             selectedTile.upNeighbour.rightNeighbour.isKeyTile = true;
                                         }
+                                        if (selectedTile.upNeighbour.leftNeighbour.isBlocked && selectedTile.upNeighbour.rightNeighbour.isBlocked)
+                                        {
+                                            selectedTile.upNeighbour.leftNeighbour.isKeyTile = true;
+                                            selectedTile.upNeighbour.rightNeighbour.isKeyTile = true;
+                                        }
                                         selectedTile.upNeighbour.isKeyTile = false;
 
                                     }
@@ -466,14 +476,19 @@ public class GridManager : MonoBehaviour
                                 }
                                 if (selectedTile.leftNeighbour.posOnX == 0 && visitedTiles.Count < 2 && selectedTile.rightNeighbour.isBlocked)
                                 {
-                                    if (selectedTile.rightNeighbour.downNeighbour.isBlocked||selectedTile.rightNeighbour.upNeighbour.isBlocked)
+                                    if (selectedTile.rightNeighbour.downNeighbour.isBlocked || selectedTile.rightNeighbour.upNeighbour.isBlocked)
                                     {
-                                        if (selectedTile.rightNeighbour.downNeighbour.isBlocked&&!selectedTile.rightNeighbour.upNeighbour.isBlocked)
+                                        if (selectedTile.rightNeighbour.downNeighbour.isBlocked && !selectedTile.rightNeighbour.upNeighbour.isBlocked)
                                         {
                                             selectedTile.rightNeighbour.downNeighbour.isKeyTile = true;
                                         }
                                         else
                                         {
+                                            selectedTile.rightNeighbour.upNeighbour.isKeyTile = true;
+                                        }
+                                        if (selectedTile.rightNeighbour.downNeighbour.isBlocked && selectedTile.rightNeighbour.upNeighbour.isBlocked)
+                                        {
+                                            selectedTile.rightNeighbour.downNeighbour.isKeyTile = true;
                                             selectedTile.rightNeighbour.upNeighbour.isKeyTile = true;
                                         }
                                         selectedTile.rightNeighbour.isKeyTile = false;
@@ -612,6 +627,11 @@ public class GridManager : MonoBehaviour
                                         }
                                         else
                                         {
+                                            selectedTile.leftNeighbour.upNeighbour.isKeyTile = true;
+                                        }
+                                        if (selectedTile.leftNeighbour.downNeighbour.isBlocked && selectedTile.leftNeighbour.upNeighbour.isBlocked)
+                                        {
+                                            selectedTile.leftNeighbour.downNeighbour.isKeyTile = true;
                                             selectedTile.leftNeighbour.upNeighbour.isKeyTile = true;
                                         }
                                         selectedTile.leftNeighbour.isKeyTile = false;
