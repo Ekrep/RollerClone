@@ -33,7 +33,7 @@ public class BallControl : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.Tiled += GameManager_Tiled;
+        
         GameManager.SendPathToBall += GameManager_SendPathToBall;
         GameManager.SendStartPosToBall += GameManager_SendStartPosToBall;
         GameManager.SendRequiredTilesToDye += GameManager_SendRequiredTilesToDye;
@@ -65,14 +65,11 @@ public class BallControl : MonoBehaviour
         
     }
 
-    private void GameManager_Tiled()
-    {
-        
-    }
+   
 
     private void OnDisable()
     {
-        GameManager.Tiled -= GameManager_Tiled;
+      
         GameManager.SendPathToBall -= GameManager_SendPathToBall;
         GameManager.SendStartPosToBall -= GameManager_SendStartPosToBall;
         GameManager.SendRequiredTilesToDye -= GameManager_SendRequiredTilesToDye;
@@ -86,7 +83,7 @@ public class BallControl : MonoBehaviour
     private void Update()
     {
         MoveBall();
-        //Debug.Log(_state);
+        
 
     }
 
