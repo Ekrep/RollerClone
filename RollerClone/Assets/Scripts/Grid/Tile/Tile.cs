@@ -7,7 +7,7 @@ public class Tile : MonoBehaviour
     [HideInInspector] public int posOnX;
     [HideInInspector] public int posOnZ;
     [HideInInspector] public bool isBlocked;
-     public bool isKeyTile;
+    public bool isKeyTile;
     public List<Tile> neighbourTiles;
     [HideInInspector] public MeshRenderer tileColor;
     [HideInInspector] public Vector2Int tilePosVec2;
@@ -24,10 +24,14 @@ public class Tile : MonoBehaviour
     private void OnEnable()
     {
         GameManager.Tiled += GameManager_Tiled;
-        
+        GameManager.GameWin += GameManager_GameWin;
+
     }
 
-    
+    private void GameManager_GameWin()
+    {
+        WinEffect();
+    }
 
     private void GameManager_Tiled()
     {
@@ -36,43 +40,17 @@ public class Tile : MonoBehaviour
     private void OnDisable()
     {
         GameManager.Tiled -= GameManager_Tiled;
+        GameManager.GameWin -= GameManager_GameWin;
     }
 
     private void Start()
     {
 
         tileColor = GetComponent<MeshRenderer>();
-        
+
 
     }
-    private void Update()
-    {
-        /*if (tileColor.material.color != Color.red)
-        {
-            if (isBlocked)
-            {
-
-                tileColor.material.color = Color.red;
-            }
-        }
-        if (!isBlocked)
-        {
-            tileColor.material.color = Color.white;
-        }
-       /* if (isKeyTile)
-        {
-            tileColor.material.color = Color.black;
-        }*/
-
-        /*if (isBlocked)
-        {
-            cube.SetActive(true);
-        }
-        else
-        {
-            cube.SetActive(false);
-        }*/
-    }
+    
 
 
 
@@ -105,4 +83,44 @@ public class Tile : MonoBehaviour
 
         }
     }
+
+
+
+    private void WinEffect()
+    {
+        StartCoroutine(MoveTilePosUp());
+    }
+
+    IEnumerator MoveTilePosUp()
+    {
+        yield return new WaitForSecondsRealtime(0.005f*(posOnZ));
+        if (gameObject.transform.position.y < 5)
+        {
+            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, new Vector3(gameObject.transform.position.x, 5, gameObject.transform.position.z), 50f * Time.deltaTime);
+            StartCoroutine(MoveTilePosUp());
+        }
+        else
+        {
+            StopCoroutine(MoveTilePosUp());
+            StartCoroutine(MoveTilePosDown());
+        }
+    }
+
+
+    IEnumerator MoveTilePosDown()
+    {
+        yield return new WaitForSecondsRealtime(0.005f*(posOnZ));
+
+        if (gameObject.transform.position.y>0)
+        {
+
+            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, new Vector3(gameObject.transform.position.x, 0, gameObject.transform.position.z), 50f * Time.deltaTime);
+            StartCoroutine(MoveTilePosDown());
+        }
+        else
+        {
+            StopCoroutine(MoveTilePosDown());
+        }
+    }
+
 }

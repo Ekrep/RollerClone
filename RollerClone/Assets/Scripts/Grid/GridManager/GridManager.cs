@@ -33,10 +33,19 @@ public class GridManager : MonoBehaviour
     public List<Tile> keyTiles;
 
 
+    private void OnEnable()
+    {
+        GameManager.GameWin += GameManager_GameWin;
+    }
 
-
-
-
+    private void GameManager_GameWin()
+    {
+        
+    }
+    private void OnDisable()
+    {
+        GameManager.GameWin -= GameManager_GameWin;
+    }
 
     private void Awake()
     {
