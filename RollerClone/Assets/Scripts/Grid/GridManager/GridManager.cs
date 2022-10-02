@@ -71,7 +71,8 @@ public class GridManager : MonoBehaviour
             for (int x = 0; x < gridWidth; x++)
             {
                 GameObject go;
-                go = Instantiate(_tilePrefab, new Vector3(x * 10, 0, y * 10), Quaternion.identity);
+                go = Instantiate(_tilePrefab, new Vector3(x*10 , 0, y*10), new Quaternion(90, 0, 0, 90));
+                
                 go.GetComponent<Tile>().posOnX = x;
                 go.GetComponent<Tile>().posOnZ = y;
                 go.GetComponent<Tile>().tilePosVec2 = new Vector2Int(x, y);
@@ -133,24 +134,7 @@ public class GridManager : MonoBehaviour
 
         List<Tile> unblockedTiles = new List<Tile>();
 
-        /*if (_pathCreateType==Enums.MoveablePathCreateType.Up)
-        {
-            selectedTile.leftNeighbour.isKeyTile = true;
-        }
-        if (_pathCreateType == Enums.MoveablePathCreateType.Down)
-        {
-            selectedTile.leftNeighbour.isKeyTile = true;
-        }
-        if (_pathCreateType == Enums.MoveablePathCreateType.Left)
-        {
-            selectedTile.upNeighbour.isKeyTile = true;
-        }
-        if (_pathCreateType == Enums.MoveablePathCreateType.Right)
-        {
-            selectedTile.upNeighbour.isKeyTile = true;
-        }*/
-
-        //gittiði yönün tersine gitmeme ekle
+      
         int iterationCount = 100;
         int pathWayIterationCount;
         for (int i = 0; i < iterationCount; i++)

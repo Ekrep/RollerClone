@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<GameObject> levels;
 
 
-    [HideInInspector]public int currentLevelIndex;
+    [HideInInspector] public int currentLevelIndex;
     private void Awake()
     {
         Instance = this;
@@ -36,11 +36,13 @@ public class GameManager : MonoBehaviour
 
 
 
-
+    #region Game Events
 
     public static event Action GameWin;
 
-    public static event Action<Enums.BallMovementBehaviour,Tile> Slide;
+    public static event Action NextLevel;
+
+    public static event Action<Enums.BallMovementBehaviour, Tile> Slide;
 
     public static event Action Tiled;
 
@@ -49,6 +51,15 @@ public class GameManager : MonoBehaviour
     public static event Action<Tile> SendStartPosToBall;
 
     public static event Action<int> SendRequiredTilesToDye;
+
+    #endregion
+
+    #region UI Events
+
+    public static event Action WinPanelOpen;
+    public static event Action WinPanelClose;
+
+    #endregion
 
 
 
@@ -75,7 +86,7 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
-
+    #region Game Event Functions
     public void OnGameWin()
     {
         if (GameWin != null)
@@ -84,11 +95,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void OnNextLevel()
+    {
+        if (NextLevel != null)
+        {
+            NextLevel();
+        }
+    }
+
     public void OnSlide(Enums.BallMovementBehaviour movementBehaviour, Tile currentTile)
     {
         if (Slide != null)
         {
-            Slide(movementBehaviour,currentTile);
+            Slide(movementBehaviour, currentTile);
         }
     }
 
@@ -102,14 +121,14 @@ public class GameManager : MonoBehaviour
 
     public void OnSendPathToBall(List<Tile> tilePath)
     {
-        if (SendPathToBall!=null)
+        if (SendPathToBall != null)
         {
             SendPathToBall(tilePath);
         }
     }
     public void OnSendStartPosToBall(Tile startTile)
     {
-        if (SendStartPosToBall!=null)
+        if (SendStartPosToBall != null)
         {
             SendStartPosToBall(startTile);
         }
@@ -117,9 +136,30 @@ public class GameManager : MonoBehaviour
 
     public void OnSendRequiredTilesToDye(int unblockedTilesCount)
     {
-        if (SendRequiredTilesToDye!=null)
+        if (SendRequiredTilesToDye != null)
         {
             SendRequiredTilesToDye(unblockedTilesCount);
         }
     }
+    #endregion
+
+    #region UI Event Functions
+    public void OnWinPanelOpen()
+    {
+        if (WinPanelOpen!=null)
+        {
+            WinPanelOpen();
+        }
+    }
+    public void OnWinPanelClose()
+    {
+        if (WinPanelClose != null)
+        {
+            WinPanelClose();
+        }
+    }
+
+
+
+    #endregion
 }
