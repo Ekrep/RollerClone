@@ -13,11 +13,12 @@ public class GridManager : MonoBehaviour
     [SerializeField] private GameObject _obstaclePrefab;
     public int gridHeight;
     public int gridWidth;
+    private int _seed;
     [SerializeField] private Transform _tileParent;
 
     private Enums.MoveablePathCreateType _pathCreateType;
 
-
+    private Color _obstacleColor;
 
     public Dictionary<Vector2Int, Tile> tileDictionary = new Dictionary<Vector2Int, Tile>();
 
@@ -36,28 +37,34 @@ public class GridManager : MonoBehaviour
     private void OnEnable()
     {
         GameManager.GameWin += GameManager_GameWin;
+        GameManager.NextLevel += GameManager_NextLevel;
+    }
+
+    private void GameManager_NextLevel()
+    {
+
+        Init();
     }
 
     private void GameManager_GameWin()
     {
-        
+       
     }
     private void OnDisable()
     {
         GameManager.GameWin -= GameManager_GameWin;
+        GameManager.NextLevel -= GameManager_NextLevel;
     }
 
     private void Awake()
     {
+        
         Instance = this;
     }
 
     void Start()
     {
-        GenerateGrid();
-        GenerateObstacles();
-        CreateRealPathThisTime();
-        CheckUnblockedTiles();
+        Init();
 
     }
 
@@ -80,6 +87,7 @@ public class GridManager : MonoBehaviour
                 go.name = "Tile" + "(" + x + "," + y + ")";
                 allTiles.Add(go.GetComponent<Tile>());
                 tileDictionary.Add(new Vector2Int(x, y), go.GetComponent<Tile>());
+                go.GetComponent<Tile>().cube.GetComponent<MeshRenderer>().material.color = _obstacleColor; 
 
             }
         }
@@ -121,6 +129,8 @@ public class GridManager : MonoBehaviour
     private void CreateRealPathThisTime()
     {
 
+
+        
         _selectedTile = tileDictionary[new Vector2Int(Random.Range(1, gridWidth - 2), Random.Range(1, gridHeight - 2))];
         Debug.Log("/////////FIRST SELECTED TILE//////////" + _selectedTile);
         GameManager.Instance.OnSendStartPosToBall(_selectedTile);
@@ -748,43 +758,36 @@ public class GridManager : MonoBehaviour
     }
 
 
-    private Enums.MoveablePathCreateType FirstPathCreateBehaviour(Enums.MoveablePathCreateType type)
+
+    private Color GetColorForObstacles()
     {
-        if (type == Enums.MoveablePathCreateType.Up || type == Enums.MoveablePathCreateType.Down)
-        {
-            return (Enums.MoveablePathCreateType)Random.Range(2, 4);
-        }
-        if (type == Enums.MoveablePathCreateType.Right || type == Enums.MoveablePathCreateType.Left)
-        {
-            return (Enums.MoveablePathCreateType)Random.Range(0, 2);
-        }
-
-
-        return 0;
+        Color color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
+        return color;
     }
 
-    private void RemoveKeyTile(Tile currentTile, Enums.MoveablePathCreateType behaviour)
+    public void Init()
     {
-        if (behaviour == Enums.MoveablePathCreateType.Up && currentTile.upNeighbour.isKeyTile && currentTile.rightNeighbour.isKeyTile && currentTile.leftNeighbour.isKeyTile)
+        _seed = Random.seed;
+        Random.InitState(_seed);
+        GameManager.Instance.OnGetSeed(_seed);
+        for (int i = 0; i < allTiles.Count; i++)
         {
-            currentTile.upNeighbour.isKeyTile = false;
+            Destroy(allTiles[i].gameObject);
         }
-        if (behaviour == Enums.MoveablePathCreateType.Down && currentTile.downNeighbour.isKeyTile && currentTile.rightNeighbour.isKeyTile && currentTile.leftNeighbour.isKeyTile)
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene()== UnityEngine.SceneManagement.SceneManager.GetSceneByName("GameScene"))
         {
-            currentTile.downNeighbour.isKeyTile = false;
+            Random.InitState(GameManager.Instance.levels[GameManager.Instance.currentLevelIndex]);
+            Debug.Log(GameManager.Instance.levels[GameManager.Instance.currentLevelIndex]+"seedgrid");
         }
-        if (behaviour == Enums.MoveablePathCreateType.Left && currentTile.leftNeighbour.isKeyTile && currentTile.upNeighbour.isKeyTile && currentTile.downNeighbour.isKeyTile)
-        {
-            currentTile.leftNeighbour.isKeyTile = false;
-        }
-        if (behaviour == Enums.MoveablePathCreateType.Left && currentTile.rightNeighbour.isKeyTile && currentTile.upNeighbour.isKeyTile && currentTile.downNeighbour.isKeyTile)
-        {
-            currentTile.rightNeighbour.isKeyTile = false;
-        }
+       
+        tileDictionary.Clear();
+        _obstacleColor = GetColorForObstacles();
+        allTiles.Clear();
+        unblockedTiles.Clear();
+        GenerateGrid();
+        GenerateObstacles();
+        CreateRealPathThisTime();
+        CheckUnblockedTiles();
     }
-
-
-
-
 
 }

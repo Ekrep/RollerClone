@@ -7,32 +7,55 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     //Gameobject yerine level scripti olustur!
-    [SerializeField] private List<GameObject> levels;
+    public List<int> levels;
+    
 
-
-    [HideInInspector] public int currentLevelIndex;
+    [HideInInspector] public int currentLevelIndex=0;
     private void Awake()
     {
+        LoadSeed();
         Instance = this;
     }
     private void OnEnable()
     {
-        GameManager.GameWin += GameManager_GameWin;
+        currentLevelIndex=PlayerPrefs.GetInt("CurrentLevel");
+        GameWin += GameManager_GameWin;
+        NextLevel += GameManager_NextLevel;
+    }
+
+    private void GameManager_NextLevel()
+    {
+        PlayerPrefs.SetInt("CurrentLevel", currentLevelIndex);
     }
 
     private void GameManager_GameWin()
     {
         currentLevelIndex++;
+
+        if (currentLevelIndex >= levels.Count)
+        {
+            currentLevelIndex = 0;
+        }
         Debug.Log("win");
-        //LevelControl();
+        
     }
 
     private void OnDisable()
     {
-        GameManager.GameWin -= GameManager_GameWin;
+        
+        GameWin -= GameManager_GameWin;
+        NextLevel -= GameManager_NextLevel;
     }
-
-
+   
+    private void LoadSeed()
+    {
+        int savedSeedCount = PlayerPrefs.GetInt("Count");
+        for (int i = 0; i < savedSeedCount; i++)
+        {
+            int seed = PlayerPrefs.GetInt("Seed"+i, i);
+            levels.Add(seed);
+        }
+    }
 
 
 
@@ -61,30 +84,23 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
+    public static event Action<int> GetSeed;
 
 
-    #region LevelControl Function
-    private void LevelControl()
+    public void OnGetSeed(int seed)
     {
-        /*for (int i = 0; i < levels.Count; i++)
+        if (GetSeed!=null)
         {
-            if (i!=_currentLevelIndex)
-            {
-                levels[i].SetActive(false);
-            }
-        }*/
-        if (currentLevelIndex != 0)
-        {
-            levels[currentLevelIndex - 1].SetActive(false);
-            levels[currentLevelIndex].SetActive(true);
-
+            GetSeed(seed);
         }
-
     }
 
 
+    
 
-    #endregion
+
+
+    
 
     #region Game Event Functions
     public void OnGameWin()

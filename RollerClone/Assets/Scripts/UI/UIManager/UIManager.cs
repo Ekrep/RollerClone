@@ -27,14 +27,10 @@ public class UIManager : MonoBehaviour
         GameManager.GameWin -= GameManager_GameWin;
         GameManager.NextLevel -= GameManager_NextLevel;
     }
-    void Start()
-    {
-        
-    }
-
     
-    void Update()
+
+    public void NextLevel()
     {
-        
+        GameManager.Instance.OnNextLevel();
     }
 }

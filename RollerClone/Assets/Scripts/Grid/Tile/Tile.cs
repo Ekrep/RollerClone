@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Tile : MonoBehaviour
 {
     [HideInInspector] public int posOnX;
@@ -25,7 +26,13 @@ public class Tile : MonoBehaviour
     {
         GameManager.Tiled += GameManager_Tiled;
         GameManager.GameWin += GameManager_GameWin;
+        GameManager.NextLevel += GameManager_NextLevel;
 
+    }
+
+    private void GameManager_NextLevel()
+    {
+        Destroy(gameObject);
     }
 
     private void GameManager_GameWin()
@@ -41,6 +48,7 @@ public class Tile : MonoBehaviour
     {
         GameManager.Tiled -= GameManager_Tiled;
         GameManager.GameWin -= GameManager_GameWin;
+        GameManager.NextLevel -= GameManager_NextLevel;
     }
 
     private void Start()
@@ -89,6 +97,7 @@ public class Tile : MonoBehaviour
     private void WinEffect()
     {
         StartCoroutine(MoveTilePosUp());
+        
     }
 
     IEnumerator MoveTilePosUp()

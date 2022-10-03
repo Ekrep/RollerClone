@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Cam : MonoBehaviour
 {
-    [SerializeField]private float _distanceBetweenMapAndCam;
+    
 
     private void OnEnable()
     {
@@ -13,7 +13,7 @@ public class Cam : MonoBehaviour
 
     private void GameManager_Tiled()
     {
-        this.gameObject.transform.position = new Vector3((GridManager.Instance.gridWidth / 2)*10, _distanceBetweenMapAndCam, (GridManager.Instance.gridHeight / 4)*10);
+        this.gameObject.transform.position = new Vector3((GridManager.Instance.gridWidth / 2)*10, GridManager.Instance.gridWidth*10, (GridManager.Instance.gridHeight / 4)*10);
     }
 
     private void OnDisable()

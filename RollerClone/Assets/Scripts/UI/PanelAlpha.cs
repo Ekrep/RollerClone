@@ -35,6 +35,7 @@ public class PanelAlpha : MonoBehaviour
         }
         else
         {
+            _canvasGroup.interactable = true;
             StopCoroutine(OpenPanel());
         }
 
@@ -54,6 +55,7 @@ public class PanelAlpha : MonoBehaviour
         }
         else
         {
+            _canvasGroup.interactable = false;
             StopCoroutine(ClosePanel());
         }
     }

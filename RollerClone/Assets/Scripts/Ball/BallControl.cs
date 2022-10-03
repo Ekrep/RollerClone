@@ -14,7 +14,6 @@ namespace FIMSpace.Jiggling
 
         private TrailRenderer _trailRenderer;
 
-        public Material mat;
 
         [SerializeField]private ParticleSystem _ps;
 
@@ -48,12 +47,21 @@ namespace FIMSpace.Jiggling
             GameManager.SendStartPosToBall += GameManager_SendStartPosToBall;
             GameManager.SendRequiredTilesToDye += GameManager_SendRequiredTilesToDye;
             GameManager.GameWin += GameManager_GameWin;
+            GameManager.NextLevel += GameManager_NextLevel;
+        }
+
+        private void GameManager_NextLevel()
+        {
+            _canMove = true;
         }
 
         private void GameManager_GameWin()
         {
             _canMove = false;
             CallBallJump();
+            _currentTile = null;
+            _requiredTilesToDye = 0;
+            _coloredTileCount = 0;
 
         }
 
@@ -84,6 +92,7 @@ namespace FIMSpace.Jiggling
             GameManager.SendStartPosToBall -= GameManager_SendStartPosToBall;
             GameManager.SendRequiredTilesToDye -= GameManager_SendRequiredTilesToDye;
             GameManager.GameWin -= GameManager_GameWin;
+            GameManager.NextLevel -= GameManager_NextLevel;
         }
         private void Start()
         {
@@ -276,8 +285,9 @@ namespace FIMSpace.Jiggling
         private void GetRandomColor()
         {
             Color color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
-            mat.color= color;
-            Debug.Log(_meshRenderer.material.color + "color");
+
+            _meshRenderer.material.color = color;
+            
         }
 
     }
