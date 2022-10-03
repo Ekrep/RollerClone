@@ -6,6 +6,9 @@ public class PanelAlpha : MonoBehaviour
 {
     private CanvasGroup _canvasGroup;
 
+    [SerializeField]private float _openSpeed;
+    [SerializeField]private float _closeSpeed;
+
     void Start()
     {
         _canvasGroup = GetComponent<CanvasGroup>();
@@ -30,12 +33,13 @@ public class PanelAlpha : MonoBehaviour
 
         if (_canvasGroup.alpha!=1)
         {
-            _canvasGroup.alpha = Mathf.MoveTowards(_canvasGroup.alpha, 1, 1f * Time.deltaTime);
+            _canvasGroup.alpha = Mathf.MoveTowards(_canvasGroup.alpha, 1, _openSpeed * Time.deltaTime);
             StartCoroutine(OpenPanel());
         }
         else
         {
             _canvasGroup.interactable = true;
+            _canvasGroup.blocksRaycasts = true;
             StopCoroutine(OpenPanel());
         }
 
@@ -50,12 +54,13 @@ public class PanelAlpha : MonoBehaviour
 
         if (_canvasGroup.alpha != 0)
         {
-            _canvasGroup.alpha = Mathf.MoveTowards(_canvasGroup.alpha, 0, 1 * Time.deltaTime);
+            _canvasGroup.alpha = Mathf.MoveTowards(_canvasGroup.alpha, 0, _closeSpeed * Time.deltaTime);
             StartCoroutine(ClosePanel());
         }
         else
         {
             _canvasGroup.interactable = false;
+            _canvasGroup.blocksRaycasts = false;
             StopCoroutine(ClosePanel());
         }
     }
