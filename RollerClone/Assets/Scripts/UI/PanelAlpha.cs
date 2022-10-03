@@ -30,7 +30,7 @@ public class PanelAlpha : MonoBehaviour
 
         if (_canvasGroup.alpha!=1)
         {
-            _canvasGroup.alpha = Mathf.MoveTowards(_canvasGroup.alpha, 1, 0.5f * Time.deltaTime);
+            _canvasGroup.alpha = Mathf.MoveTowards(_canvasGroup.alpha, 1, 1f * Time.deltaTime);
             StartCoroutine(OpenPanel());
         }
         else

@@ -16,6 +16,7 @@ namespace FIMSpace.Jiggling
 
 
         [SerializeField]private ParticleSystem _ps;
+        [SerializeField] private ParticleSystem _confetti;
 
         private Enums.BallState _state;
         private Enums.BallMovementBehaviour _movementBehaviour;
@@ -53,12 +54,14 @@ namespace FIMSpace.Jiggling
         private void GameManager_NextLevel()
         {
             _canMove = true;
+            Init();
         }
 
         private void GameManager_GameWin()
         {
             _canMove = false;
             CallBallJump();
+            _confetti.Play();
             _currentTile = null;
             _requiredTilesToDye = 0;
             _coloredTileCount = 0;
@@ -99,8 +102,7 @@ namespace FIMSpace.Jiggling
             _canMove = true;
             _meshRenderer = GetComponent<MeshRenderer>();
             _trailRenderer = GetComponent<TrailRenderer>();
-            GetRandomColor();
-            _ps.startColor = _meshRenderer.material.color;
+            Init();
             
             
             
@@ -290,5 +292,11 @@ namespace FIMSpace.Jiggling
             
         }
 
+        private void Init()
+        {
+            GetRandomColor();
+            _ps.startColor = _meshRenderer.material.color;
+        }
     }
+
 }
