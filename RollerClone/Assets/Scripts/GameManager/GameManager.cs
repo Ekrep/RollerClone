@@ -7,14 +7,20 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     //Gameobject yerine level scripti olustur!
-    public List<int> levels;
-    
+    public List<int> levelSeeds;
+
+    public List<int> levelWidth;
+    public List<int> levelHeight;
+
 
     [HideInInspector] public int currentLevelIndex=0;
     private void Awake()
     {
-        LoadSeed();
         Instance = this;
+        LoadSeed();
+        currentLevelIndex = 0;
+        
+        
     }
     private void OnEnable()
     {
@@ -32,7 +38,7 @@ public class GameManager : MonoBehaviour
     {
         currentLevelIndex++;
 
-        if (currentLevelIndex >= levels.Count)
+        if (currentLevelIndex >= levelSeeds.Count)
         {
             currentLevelIndex = 0;
         }
@@ -53,7 +59,11 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < savedSeedCount; i++)
         {
             int seed = PlayerPrefs.GetInt("Seed"+i, i);
-            levels.Add(seed);
+            int height= PlayerPrefs.GetInt("Height" + i, i);
+            int width = PlayerPrefs.GetInt("Width" + i, i);
+            levelSeeds.Add(seed);
+            levelHeight.Add(height);
+            levelWidth.Add(width);
         }
     }
 

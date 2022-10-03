@@ -1196,6 +1196,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1047675453909094542, guid: add3bc10698f4ba4eaf7a9c8a7306e63,
         type: 3}
+      propertyPath: gridWidth
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1047675453909094542, guid: add3bc10698f4ba4eaf7a9c8a7306e63,
+        type: 3}
+      propertyPath: gridHeight
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1047675453909094542, guid: add3bc10698f4ba4eaf7a9c8a7306e63,
+        type: 3}
       propertyPath: _tileParent
       value: 
       objectReference: {fileID: 468647387}

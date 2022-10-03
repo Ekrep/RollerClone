@@ -774,10 +774,12 @@ public class GridManager : MonoBehaviour
         {
             Destroy(allTiles[i].gameObject);
         }
-        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene()== UnityEngine.SceneManagement.SceneManager.GetSceneByName("GameScene"))
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene() == UnityEngine.SceneManagement.SceneManager.GetSceneByName("GameScene"))
         {
-            Random.InitState(GameManager.Instance.levels[GameManager.Instance.currentLevelIndex]);
-            Debug.Log(GameManager.Instance.levels[GameManager.Instance.currentLevelIndex]+"seedgrid");
+            Random.InitState(GameManager.Instance.levelSeeds[GameManager.Instance.currentLevelIndex]);
+            gridHeight = GameManager.Instance.levelHeight[GameManager.Instance.currentLevelIndex];
+            gridWidth = GameManager.Instance.levelWidth[GameManager.Instance.currentLevelIndex];
+
         }
        
         tileDictionary.Clear();
