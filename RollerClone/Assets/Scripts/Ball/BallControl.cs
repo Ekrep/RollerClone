@@ -49,14 +49,11 @@ namespace FIMSpace.Jiggling
             GameManager.SendRequiredTilesToDye += GameManager_SendRequiredTilesToDye;
             GameManager.GameWin += GameManager_GameWin;
             GameManager.NextLevel += GameManager_NextLevel;
-            
         }
-
-       
 
         private void GameManager_NextLevel()
         {
-            
+            _canMove = true;
             Init();
         }
 
@@ -99,11 +96,12 @@ namespace FIMSpace.Jiggling
             GameManager.SendRequiredTilesToDye -= GameManager_SendRequiredTilesToDye;
             GameManager.GameWin -= GameManager_GameWin;
             GameManager.NextLevel -= GameManager_NextLevel;
-            
         }
         private void Start()
         {
-            
+            _canMove = true;
+            _meshRenderer = GetComponent<MeshRenderer>();
+            _trailRenderer = GetComponent<TrailRenderer>();
             Init();
             
             
@@ -296,9 +294,6 @@ namespace FIMSpace.Jiggling
 
         private void Init()
         {
-            _canMove = true;
-            _meshRenderer = GetComponent<MeshRenderer>();
-            _trailRenderer = GetComponent<TrailRenderer>();
             GetRandomColor();
             _ps.startColor = _meshRenderer.material.color;
         }

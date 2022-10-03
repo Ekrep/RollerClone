@@ -92,16 +92,11 @@ public class GameManager : MonoBehaviour
     public static event Action WinPanelOpen;
     public static event Action WinPanelClose;
 
-    public static event Action StartPanelOpen;
-    public static event Action StartPanelClose;
-
     #endregion
 
-    #region LevelGenEvent
     public static event Action<int> GetSeed;
-    #endregion
 
-    #region LevelGenFunction
+
     public void OnGetSeed(int seed)
     {
         if (GetSeed!=null)
@@ -109,13 +104,13 @@ public class GameManager : MonoBehaviour
             GetSeed(seed);
         }
     }
-    #endregion
+
+
+    
 
 
 
-
-
-
+    
 
     #region Game Event Functions
     public void OnGameWin()
@@ -187,22 +182,6 @@ public class GameManager : MonoBehaviour
         if (WinPanelClose != null)
         {
             WinPanelClose();
-        }
-    }
-
-    public void OnStartPanelOpen()
-    {
-        if (StartPanelOpen!=null)
-        {
-            StartPanelOpen();
-        }
-    }
-
-    public void OnStartPanelClose()
-    {
-        if (StartPanelClose!=null)
-        {
-            StartPanelClose();
         }
     }
 
