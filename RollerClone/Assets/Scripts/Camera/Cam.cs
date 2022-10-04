@@ -14,6 +14,7 @@ public class Cam : MonoBehaviour
 
     private void GameManager_NextLevel()
     {
+        Camera.main.fieldOfView = GridManager.Instance.gridWidth * 5000 / Screen.width;
         this.gameObject.transform.position = new Vector3((float)(GridManager.Instance.gridWidth / 2) * 10 - 5, (float)Screen.width / (GameManager.Instance.levelWidth[GameManager.Instance.currentLevelIndex] / 3f), (float)(GridManager.Instance.gridHeight / 4) * 10);
     }
 
@@ -31,6 +32,7 @@ public class Cam : MonoBehaviour
 
     private void Start()
     {
+        Camera.main.fieldOfView = GridManager.Instance.gridWidth*5000 /Screen.width ;
         this.gameObject.transform.position = new Vector3((float)(GridManager.Instance.gridWidth / 2) * 10 - 5, (float)Screen.width / (GameManager.Instance.levelWidth[GameManager.Instance.currentLevelIndex] / 3f), (float)(GridManager.Instance.gridHeight / 4) * 10);
     }
 
