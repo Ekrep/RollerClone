@@ -776,9 +776,9 @@ public class GridManager : MonoBehaviour
         }
         if (UnityEngine.SceneManagement.SceneManager.GetActiveScene() == UnityEngine.SceneManagement.SceneManager.GetSceneByName("GameScene"))
         {
-            Random.InitState(GameManager.Instance.levelSeeds[GameManager.Instance.currentLevelIndex]);
-            gridHeight = GameManager.Instance.levelHeight[GameManager.Instance.currentLevelIndex];
-            gridWidth = GameManager.Instance.levelWidth[GameManager.Instance.currentLevelIndex];
+            Random.InitState(GameManager.Instance.levelData.seed[GameManager.Instance.currentLevelIndex]);
+            gridHeight = GameManager.Instance.levelData.gridHeight[GameManager.Instance.currentLevelIndex];
+            gridWidth = GameManager.Instance.levelData.gridWith[GameManager.Instance.currentLevelIndex];
 
         }
        

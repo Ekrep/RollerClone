@@ -14,14 +14,14 @@ public class Cam : MonoBehaviour
 
     private void GameManager_NextLevel()
     {
-        Camera.main.fieldOfView = GridManager.Instance.gridWidth * 5000 / Screen.width;
-        this.gameObject.transform.position = new Vector3((float)(GridManager.Instance.gridWidth / 2) * 10 - 5, (float)Screen.width / (GameManager.Instance.levelWidth[GameManager.Instance.currentLevelIndex] / 3f), (float)(GridManager.Instance.gridHeight / 4) * 10);
+       
+        //Camera.main.fieldOfView = GridManager.Instance.gridWidth * 5000 / Screen.width;
+        //this.gameObject.transform.position = new Vector3((float)(GameManager.Instance.levelData.gridWith[GameManager.Instance.currentLevelIndex]/ 2) * 10 - 5, (float)Screen.width / (GameManager.Instance.levelData.gridWith[GameManager.Instance.currentLevelIndex] / 3f), (float)(GameManager.Instance.levelData.gridHeight[GameManager.Instance.currentLevelIndex] / 2 / 6) * 10);
     }
 
     private void GameManager_Tiled()
     {
        
-       // this.gameObject.transform.position = new Vector3((float)(GridManager.Instance.gridWidth / 2)*10-5, (float) Screen.width/(GridManager.Instance.gridWidth/3), (float)(GridManager.Instance.gridHeight / 4)*10);
     }
 
     private void OnDisable()
@@ -32,8 +32,12 @@ public class Cam : MonoBehaviour
 
     private void Start()
     {
-        Camera.main.fieldOfView = GridManager.Instance.gridWidth*5000 /Screen.width ;
-        this.gameObject.transform.position = new Vector3((float)(GridManager.Instance.gridWidth / 2) * 10 - 5, (float)Screen.width / (GameManager.Instance.levelWidth[GameManager.Instance.currentLevelIndex] / 3f), (float)(GridManager.Instance.gridHeight / 4) * 10);
+
+            Camera.main.aspect = 9f / 16f;
+        //Camera.main.fieldOfView = GridManager.Instance.gridWidth * 5000 / Screen.width;
+        this.gameObject.transform.position = new Vector3((float)(GameManager.Instance.levelData.gridWith[GameManager.Instance.currentLevelIndex] / 2) * 10 - 5, (float)Screen.width / (GameManager.Instance.levelData.gridWith[GameManager.Instance.currentLevelIndex] / 4f), (float)(GameManager.Instance.levelData.gridHeight[GameManager.Instance.currentLevelIndex] / 2 / 6) * 10);
+
+
     }
 
 }

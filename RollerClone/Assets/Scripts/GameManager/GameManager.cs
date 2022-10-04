@@ -6,6 +6,7 @@ using System;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    public LevelData levelData;
     //Gameobject yerine level scripti olustur!
     public List<int> levelSeeds;
 
@@ -38,7 +39,7 @@ public class GameManager : MonoBehaviour
     {
         currentLevelIndex++;
 
-        if (currentLevelIndex >= levelSeeds.Count)
+        if (currentLevelIndex >= levelData.seed.Count)
         {
             currentLevelIndex = 0;
         }

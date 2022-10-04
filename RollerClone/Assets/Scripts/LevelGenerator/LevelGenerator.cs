@@ -10,6 +10,7 @@ public class LevelGenerator : MonoBehaviour
     public List<int> levelWidth = new List<int>();
     public List<int> levelHeight = new List<int>();
     private int savedSeedCount;
+    public LevelData levelData;
     private void OnEnable()
     {
         GameManager.GetSeed += GameManager_GetSeed;
@@ -33,6 +34,9 @@ public class LevelGenerator : MonoBehaviour
 
     public void SaveSeed()
     {
+        int seed=0;
+        int height=0;
+        int width=0;
         levelSeeds.Clear();
         levelHeight.Clear();
         levelWidth.Clear();
@@ -42,25 +46,36 @@ public class LevelGenerator : MonoBehaviour
             levelSeeds.Add(PlayerPrefs.GetInt("Seed" + i, 0));
             levelHeight.Add(PlayerPrefs.GetInt("Height" + i, 0));
             levelWidth.Add(PlayerPrefs.GetInt("Width" + i, 0));
+             seed = PlayerPrefs.GetInt("Seed" + i, i);
+             height = PlayerPrefs.GetInt("Height" + i, i);
+             width = PlayerPrefs.GetInt("Width" + i, i);
+           
         }
         
 
         levelSeeds.Add(_seed);
         levelHeight.Add(GridManager.Instance.gridHeight);
         levelWidth.Add(GridManager.Instance.gridWidth);
-        
+        levelData.gridHeight.Add(height);
+        levelData.gridWith.Add(width);
+        levelData.seed.Add(seed);
+
         for (int i = 0; i < levelSeeds.Count; i++)
         {
             Debug.Log("secondAdd");
             PlayerPrefs.SetInt("Seed" + i, levelSeeds[i]);
-                PlayerPrefs.SetInt("Height" + i, levelHeight[i]);
-                PlayerPrefs.SetInt("Width" + i, levelWidth[i]);
-
+            PlayerPrefs.SetInt("Height" + i, levelHeight[i]);
+            PlayerPrefs.SetInt("Width" + i, levelWidth[i]);
             
+
 
 
         }
         PlayerPrefs.SetInt("Count", levelSeeds.Count);
+
+       
+        
+
     }  
     
 

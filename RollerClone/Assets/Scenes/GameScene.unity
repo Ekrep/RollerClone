@@ -312,6 +312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b05d76d1c402318469eba3db78f9261d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelData: {fileID: 11400000, guid: 56246e8bbd57b5d47892dac5908058f9, type: 2}
   levelSeeds: 
   levelWidth: 
   levelHeight: 
